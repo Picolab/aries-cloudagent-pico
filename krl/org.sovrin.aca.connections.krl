@@ -8,7 +8,7 @@ ruleset org.sovrin.aca.connections {
     >>
     use module org.sovrin.aca alias aca
     use module io.picolabs.wrangler alias wrangler
-    use module org.sovrin.agent.ui alias invite
+    use module org.sovrin.aca.connections.ui alias invite
     shares __testing, invitation, html
   }
   global {

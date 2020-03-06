@@ -1,4 +1,4 @@
-ruleset org.sovrin.agent.ui {
+ruleset org.sovrin.aca.connections.ui {
   meta {
     use module html
     provides html
