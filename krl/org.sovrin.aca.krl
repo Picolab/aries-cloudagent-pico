@@ -183,8 +183,7 @@ ruleset org.sovrin.aca {
     if eventSpec then
       send_directive("OOB message routed",{"eventSpec":eventSpec})
     fired {
-      raise event "didcomm_"+eventSpec attributes
-        all.put("message",oobm)
+      raise event "didcomm_"+eventSpec attributes {"message":oobm}
     }
   }
 //
