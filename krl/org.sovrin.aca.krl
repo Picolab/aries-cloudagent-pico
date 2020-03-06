@@ -17,6 +17,8 @@ ruleset org.sovrin.aca {
             new https://didcomm.org/
         Aries RFC 0046: Mediators and Relays
           Implements routing of packed message in function `packMsg`
+        Aries RFC 0434: Out of Band Protocol 1.0
+          How we accept connections/1.0/invitation
       Bookkeeping
         This ruleset endpoint address
           Available thru provided function `localServiceEndpoint`
@@ -35,7 +37,14 @@ ruleset org.sovrin.aca {
     shares __testing
   }
   global {
-    __testing = { /* no user serviceable parts */ }
+    __testing = { "queries":
+      [ { "name": "__testing" }
+      , { "name": "prefix" }
+      ] , "events":
+      [ { "domain": "didcomm", "type": "message", "attrs": [ "uri" ] }
+      //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
+      ]
+    }
     routeFwdMap = function(to,pm){
       {
         "@type": "https://didcomm.org/routing/1.0/forward",
@@ -133,7 +142,7 @@ ruleset org.sovrin.aca {
     }
   }
 //
-// receive messages
+// receive DIDComm messages
 //
   rule route_new_message {
     select when didcomm message protected re#(.+)# setting(protected)
@@ -149,11 +158,33 @@ ruleset org.sovrin.aca {
       eventSpec = eventFromType(msg{"@type"})
     }
     if eventSpec then
-      send_directive("message routed",{"eventSpec":eventSpec})
+      send_directive("DIDComm message routed",{"eventSpec":eventSpec})
     fired {
       raise event "didcomm_"+eventSpec attributes
         all.put("message",msg)
-           .put("need_router_connection",event:attr("need_router_connection"))
+    }
+  }
+//
+// receive outofband messages
+//
+  rule route_outofband_message {
+    select when didcomm message
+      uri re#(http.+[?].*((c_i=)|(d_m=)).+)# setting(uri)
+    pre {
+      qs = uri.split("?").tail().join("?")
+      args = qs.split("&")
+        .map(function(x){x.split("=")})
+        .collect(function(x){x[0]})
+        .map(function(x){x[0][1]})
+      c_i = args{"c_i"} || args{"d_m"}
+      oobm = math:base64decode(c_i).decode()
+      eventSpec = eventFromType(oobm{"@type"})
+    }
+    if eventSpec then
+      send_directive("OOB message routed",{"eventSpec":eventSpec})
+    fired {
+      raise event "didcomm_"+eventSpec attributes
+        all.put("message",oobm)
     }
   }
 //
