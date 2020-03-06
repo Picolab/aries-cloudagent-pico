@@ -7,16 +7,23 @@ ruleset org.sovrin.aca.trust_ping {
         https://didcomm.org/trust_ping/1.0/
     >>
     use module org.sovrin.aca alias aca
-    shares __testing
+    shares __testing, last_trust_pings
   }
   global {
     __testing = { "queries":
       [ { "name": "__testing" }
-      //, { "name": "entry", "args": [ "key" ] }
+      , { "name": "last_trust_pings" }
       ] , "events":
-      [ //{ "domain": "d1", "type": "t1" }
+      [ { "domain": "trust_ping", "type": "new_ping", "attrs": [ "their_vk" ] }
       //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
       ]
+    }
+    last_trust_pings = function(){
+      {
+        "lastPingReceived": ent:lastPingReceived,
+        "lastPingSent": ent:lastPingSent,
+        "lastPingResponse": ent:lastPingResponse,
+      }
     }
     trustPingMap = function(content){
       {
@@ -39,14 +46,15 @@ ruleset org.sovrin.aca.trust_ping {
     pre {
       msg = event:attr("message")
       rm = trustPingResMap(msg{"@id"})
-      their_key = event:attr("sender_key")
-      conn = aca:connections(){their_key}
-      pm = aca:packMsg(their_key,rm,conn{"my_did"})
+      their_vk = event:attr("sender_key")
+      conn = aca:connections(){their_vk}
+      pm = aca:packMsg(their_vk,rm,conn{"my_did"})
       se = conn{"their_endpoint"}
       may_respond = msg{"response_requested"} == false => false | true
     }
     if se && may_respond then noop()
     fired {
+      ent:lastPingReceived := msg
       raise didcomm event "new_ssi_agent_wire_message" attributes {
         "serviceEndpoint": se, "packedMessage": pm
       }
@@ -57,12 +65,15 @@ ruleset org.sovrin.aca.trust_ping {
 //
   rule handle_trust_ping_ping_response {
     select when didcomm_trust_ping:ping_response
+    fired {
+      ent:lastPingResponse := event:attr("message")
+    }
   }
 //
 // initiate trust ping
 //
   rule initiate_trust_ping {
-    select when aca trust_ping_requested
+    select when trust_ping new_ping
     pre {
       their_vk = event:attr("their_vk")
       conn = aca:connections(){their_vk}
@@ -72,6 +83,7 @@ ruleset org.sovrin.aca.trust_ping {
     }
     if se then noop()
     fired {
+      ent:lastPingSent := rm
       raise didcomm event "new_ssi_agent_wire_message" attributes {
         "serviceEndpoint": se, "packedMessage": pm
       }
