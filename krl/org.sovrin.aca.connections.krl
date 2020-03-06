@@ -27,7 +27,7 @@ ruleset org.sovrin.aca.connections {
         "label": label,
         "recipientKeys": [key],
         "serviceEndpoint": endpoint
-      };
+      }
       routingKeys.isnull() => minimal |
         minimal.put({"routingKeys": routingKeys})
     }
@@ -54,23 +54,33 @@ ruleset org.sovrin.aca.connections {
       }
     }
     connResMap = function(req_id, my_did, my_vk, endpoint, routingKeys){
-      connection = connMap(my_did, my_vk, endpoint, routingKeys);
-      {
+      connection = connMap(my_did, my_vk, endpoint, routingKeys)
+      return {
         "@type": aca:prefix() + "connections/1.0/response",
         "@id": random:uuid(),
         "~thread": {"thid": req_id},
         "connection~sig": aca:signField(my_did,my_vk,connection)
       }
     }
+    connReqMap = function(label, my_did, my_vk, endpoint, routingKeys, inviteId){
+      res = {
+        "@type": aca:prefix() + "connections/1.0/request",
+        "@id": random:uuid(),
+        "label": label,
+        "connection": connMap(my_did, my_vk, endpoint, routingKeys)
+      }
+      inviteId.isnull() => res |
+        res.put("~thread",{"pthid":inviteId,"thid":res{"@id"}})
+    }
     invitation = function(label){
-      uKR = wrangler:channel("agent");
-      eci = uKR{"id"};
+      uKR = wrangler:channel("agent")
+      eci = uKR{"id"}
       im = connInviteMap(
         null,
         label || aca:label(),
         uKR{["sovrin","indyPublic"]},
         aca:localServiceEndpoint(eci)
-      );
+      )
       <<#{meta:host}/sky/cloud/#{eci}/#{meta:rid}/html.html>>
         + "?c_i=" + math:base64encode(im.encode())
     }
@@ -138,6 +148,91 @@ ruleset org.sovrin.aca.connections {
       raise didcomm event "new_ssi_agent_wire_message" attributes {
         "serviceEndpoint": se, "packedMessage": pm
       }
+    }
+  }
+//
+// connections/1.0/invitation
+//
+  rule receive_invitation {
+    select when didcomm_connections:invitation
+    pre {
+      msg = event:attr("message")
+      their_label = msg{"label"}
+    }
+    if msg && their_label then
+      wrangler:createChannel(meta:picoId,their_label,"connection")
+        setting(channel)
+    fired {
+      raise sovrin event "invitation_accepted"
+        attributes {
+          "invitation": msg,
+          "channel": channel
+        }
+    }
+  }
+  rule initiate_connection_request {
+    select when sovrin invitation_accepted
+    pre {
+      im = event:attr("invitation")
+      chann = event:attr("channel")
+      my_did = chann{"id"}
+      my_vk = chann{["sovrin","indyPublic"]}
+      ri = event:attr("routing").klog("routing information")
+      rks = ri => ri{"their_routing"} | null
+      endpoint = ri => ri{"endpoint"} | aca:localServiceEndpoint(my_did)
+      rm = connReqMap(ent:label,my_did,my_vk,endpoint,rks,im{"@id"})
+        .klog("connections request")
+      reqURL = im{"serviceEndpoint"}
+      pc = {
+        "label": im{"label"},
+        "my_did": my_did,
+        "@id": rm{"@id"},
+        "my_did": my_did,
+        "their_vk": im{"recipientKeys"}.head(),
+        "their_routing": im{"routingKeys"}.defaultsTo([]),
+      }
+      packedBody = aca:packMsg(pc{"their_vk"},rm,my_did)
+    }
+    fired {
+      ent:pending_conn := ent:pending_conn.defaultsTo([]).append(pc)
+      raise didcomm event "new_ssi_agent_wire_message" attributes {
+        "serviceEndpoint": reqURL, "packedMessage": packedBody
+      }
+    }
+  }
+//
+// connections/response
+//
+  rule handle_connections_response {
+    select when didcomm_connections:response
+    pre {
+      msg = event:attr("message")
+      verified = aca:verifySignatures(msg)
+      connection = verified{"connection"}
+      service = connection && connection{["DIDDoc","service"]}
+        .filter(function(x){x{"type"}=="IndyAgent"})
+        .head()
+      their_vk = service{"recipientKeys"}.head()
+      their_rks = service{"routingKeys"}.defaultsTo([])
+      cid = msg{["~thread","thid"]}
+      index = ent:pending_conn.defaultsTo([])
+        .reduce(function(a,p,i){
+          a<0 && p{"@id"}==cid => i | a
+        },-1)
+      c = index < 0 => null | ent:pending_conn[index]
+        .delete("@id")
+        .put({
+          "created": time:now(),
+          "their_did": connection{"DID"},
+          "their_vk": their_vk,
+          "their_endpoint": service{"serviceEndpoint"},
+          "their_routing": their_rks,
+        })
+    }
+    if typeof(index) == "Number" && index >= 0 then noop()
+    fired {
+      raise aca event "new_connection" attributes c
+      ent:pending_conn := ent:pending_conn.splice(index,1)
     }
   }
 }

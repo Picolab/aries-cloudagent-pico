@@ -10,7 +10,7 @@ ruleset org.sovrin.aca {
           Enveloping a message with function `packMsg`
         Aries RFC 0234: Signature Decorator
           Applying the digital signature with function `signField`
-          Verifying the digital signature with function `verifySignedField`
+          Verifying digital signatures with function `verifySignatures`
         Aries RFC 0348: Transition Message Type to HTTPs
           At Step 1 accepting both but generating only the old
             old did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/
@@ -32,7 +32,7 @@ ruleset org.sovrin.aca {
           Updatable thru events `aca:new_connection`, `aca:deleted_connection`
     >>
     use module io.picolabs.wrangler alias wrangler
-    provides packMsg, signField, verifySignedField,
+    provides packMsg, signField, verifySignatures,
       localServiceEndpoint, prefix, label, connections
     shares __testing
   }
@@ -91,6 +91,11 @@ ruleset org.sovrin.aca {
       answer{"sig_verified"}
         => answer{"field"}.decode().put("timestamp",time:new(timestamp))
         | null
+    }
+    verifySignatures = function(map){
+      map >< "connection~sig"
+        => map.put("connection",verifySignedField(map{"connection~sig"}))
+         | map
     }
     eventFromType = function(type){
       mturiRE = re#(.*/)([a-z0-9._-]+)/1\.\d+/([a-z0-9._-]+)$#
