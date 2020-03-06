@@ -28,7 +28,7 @@ The main ruleset, `org.sovrin.aca` makes a pico an Aries agent, in the sense tha
 The events to which it reacts are
 
 - `didcomm:message`
-  - attributes "protected" _et al_ means it is a didcomm message
+  - attributes "protected" _et al_ means it is a DIDComm message
   - attribute "c_i" (or "d_m") means it is an out-of-band message
 - `http:post`
   - the HTTP response to a DIDComm message sent asynchronously with `"content-type":"application/ssi-agent-wire"`
