@@ -53,7 +53,7 @@ ruleset org.sovrin.aca.basicmessage {
     select when basicmessage new_content
     pre {
       their_vk = event:attr("their_vk")
-      conn = aca:connections(){their_vk}
+      conn = aca:connections(their_vk)
       content = event:attr("content").decode()
       bm = basicMsgMap(content)
       pm = aca:packMsg(their_vk,bm,conn{"my_did"})

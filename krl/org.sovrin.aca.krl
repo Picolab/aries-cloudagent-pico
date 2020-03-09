@@ -34,7 +34,7 @@ ruleset org.sovrin.aca {
     use module io.picolabs.wrangler alias wrangler
     provides packMsg, signField, verifySignatures,
       localServiceEndpoint, prefix, label, connections
-    shares __testing
+    shares __testing, prefix
   }
   global {
     __testing = { "queries":
@@ -118,10 +118,10 @@ ruleset org.sovrin.aca {
     label = function(){
       ent:label
     }
-    connections = function(label) {
-      matching = function(x){x{"label"}==label};
-      label => ent:connections.filter(matching).values().head()
-             | ent:connections
+    connections = function(vk) {
+      toConnection = function(v){ent:connections{v}}
+      vk => ent:connections{vk}
+          | ent:cList.map(toConnection)
     }
   }
 //

@@ -47,7 +47,7 @@ ruleset org.sovrin.aca.trust_ping {
       msg = event:attr("message")
       rm = trustPingResMap(msg{"@id"})
       their_vk = event:attr("sender_key")
-      conn = aca:connections(){their_vk}
+      conn = aca:connections(their_vk)
       pm = aca:packMsg(their_vk,rm,conn{"my_did"})
       se = conn{"their_endpoint"}
       may_respond = msg{"response_requested"} == false => false | true
@@ -76,7 +76,7 @@ ruleset org.sovrin.aca.trust_ping {
     select when trust_ping new_ping
     pre {
       their_vk = event:attr("their_vk")
-      conn = aca:connections(){their_vk}
+      conn = aca:connections(their_vk)
       rm = trustPingMap()
       pm = aca:packMsg(their_vk,rm,conn{"my_did"})
       se = conn{"their_endpoint"}
