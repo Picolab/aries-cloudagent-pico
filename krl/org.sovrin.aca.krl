@@ -199,6 +199,7 @@ ruleset org.sovrin.aca {
     if wrangler:channel("agent").isnull() then
       wrangler:createChannel(meta:picoId,"agent","aries"/* TODO policy */)
     always {
+      ent:cList := []
       ent:connections := {}
       ent:label := event:attr("label") || wrangler:name()
     }
@@ -209,24 +210,29 @@ ruleset org.sovrin.aca {
       ent:label := event:attr("label")
     }
   }
-  rule record_new_connection {
+  rule record_new_or_updated_connection {
     select when aca:new_connection
     pre {
       their_vk = event:attr("their_vk")
+      new_connection = not (ent:cList >< their_vk)
     }
     fired {
-      ent:connections{their_vk} := event:attrs;
-      raise aca event "connections_changed"
+      ent:cList := ent:cList.append(their_vk) if new_connection
+      ent:connections{their_vk} := event:attrs
+      raise aca event "connections_changed" if new_connection
     }
   }
   rule remove_connection {
     select when aca:deleted_connection
     pre {
       their_vk = event:attr("their_vk")
+      was_listed = ent:cList >< their_vk
+      remove = function(c){c != their_vk}
     }
     fired {
+      ent:cList := ent:cList.filter(remove) if was_listed
       clear ent:connections{their_vk}
-      raise aca event "connections_changed"
+      raise aca event "connections_changed" if was_listed
     }
   }
 }
