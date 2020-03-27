@@ -101,7 +101,7 @@ ruleset org.sovrin.aca.connections {
       wrangler:createChannel(meta:picoId,their_label,"connection")
         setting(channel)
     fired {
-      raise connections event "request_accepted"
+      raise aca_connections event "request_accepted"
         attributes {
           "message": msg,
           "channel": channel,
@@ -109,7 +109,7 @@ ruleset org.sovrin.aca.connections {
     }
   }
   rule initiate_connections_response {
-    select when connections request_accepted
+    select when aca_connections request_accepted
     pre {
       msg = event:attr("message")
       req_id = msg{"@id"}
@@ -163,7 +163,7 @@ ruleset org.sovrin.aca.connections {
       wrangler:createChannel(meta:picoId,their_label,"connection")
         setting(channel)
     fired {
-      raise sovrin event "invitation_accepted"
+      raise aca_connections event "invitation_accepted"
         attributes {
           "invitation": msg,
           "channel": channel
@@ -171,7 +171,7 @@ ruleset org.sovrin.aca.connections {
     }
   }
   rule initiate_connection_request {
-    select when sovrin invitation_accepted
+    select when aca_connections invitation_accepted
     pre {
       im = event:attr("invitation")
       chann = event:attr("channel")

@@ -14,7 +14,7 @@ ruleset org.sovrin.aca.trust_ping {
       [ { "name": "__testing" }
       , { "name": "last_trust_pings" }
       ] , "events":
-      [ { "domain": "trust_ping", "type": "new_ping", "attrs": [ "their_vk" ] }
+      [ { "domain": "aca_trust_ping", "type": "new_ping", "attrs": [ "their_vk" ] }
       //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
       ]
     }
@@ -73,7 +73,7 @@ ruleset org.sovrin.aca.trust_ping {
 // initiate trust ping
 //
   rule initiate_trust_ping {
-    select when trust_ping new_ping
+    select when aca_trust_ping new_ping
     pre {
       their_vk = event:attr("their_vk")
       conn = aca:connections(their_vk)

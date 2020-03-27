@@ -15,7 +15,7 @@ ruleset org.sovrin.aca.basicmessage {
       [ { "name": "__testing" }
       , { "name": "basicmessages", "args": [ "their_vk" ] }
       ] , "events":
-      [ { "domain": "basicmessage", "type": "new_content", "attrs": [ "their_vk", "content" ] }
+      [ { "domain": "aca_basicmessage", "type": "new_content", "attrs": [ "their_vk", "content" ] }
       //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
       ]
     }
@@ -50,7 +50,7 @@ ruleset org.sovrin.aca.basicmessage {
 // initiate basicmessage
 //
   rule initiate_basicmessage {
-    select when basicmessage new_content
+    select when aca_basicmessage new_content
     pre {
       their_vk = event:attr("their_vk")
       conn = aca:connections(their_vk)

@@ -13,7 +13,7 @@ ruleset org.sovrin.aca.notification {
       [ { "name": "__testing" }
       //, { "name": "entry", "args": [ "key" ] }
       ] , "events":
-      [ { "domain": "notification", "type": "ack", "attrs": [ "their_vk", "status" ] }
+      [ { "domain": "aca_notification", "type": "new_ack", "attrs": [ "their_vk", "status" ] }
       //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
       ]
     }
@@ -36,7 +36,7 @@ ruleset org.sovrin.aca.notification {
   }
   
   rule initiate_ack {
-    select when notification ack
+    select when aca_notification new_ack
     pre {
       their_key = event:attr("their_vk")
       am = ackMap(event:attr("thid"),event:attr("status") || "OK")
