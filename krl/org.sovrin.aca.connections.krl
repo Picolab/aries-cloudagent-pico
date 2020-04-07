@@ -180,7 +180,7 @@ ruleset org.sovrin.aca.connections {
       ri = event:attr("routing").klog("routing information")
       rks = ri => ri{"their_routing"} | null
       endpoint = ri => ri{"endpoint"} | aca:localServiceEndpoint(my_did)
-      rm = connReqMap(ent:label,my_did,my_vk,endpoint,rks,im{"@id"})
+      rm = connReqMap(aca:label(),my_did,my_vk,endpoint,rks,im{"@id"})
         .klog("connections request")
       reqURL = im{"serviceEndpoint"}
       pc = {
