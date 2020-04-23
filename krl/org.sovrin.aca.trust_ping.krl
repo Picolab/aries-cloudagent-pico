@@ -7,6 +7,7 @@ ruleset org.sovrin.aca.trust_ping {
         https://didcomm.org/trust_ping/1.0/
     >>
     use module org.sovrin.aca alias aca
+    provides last_trust_pings
     shares __testing, last_trust_pings
   }
   global {
