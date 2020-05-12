@@ -88,6 +88,7 @@ ruleset org.sovrin.aca.trust_ping {
       raise didcomm event "new_ssi_agent_wire_message" attributes {
         "serviceEndpoint": se, "packedMessage": pm
       }
+      ent:lastPingResponse := null
     }
   }
 }
