@@ -1,4 +1,4 @@
-ruleset org.sovrin.aca.trust_ping {
+ruleset io.picolabs.aca.trust_ping {
   meta {
     name "Aries Cloud Agent trust_ping protocol"
     description <<
@@ -6,7 +6,7 @@ ruleset org.sovrin.aca.trust_ping {
         did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/trust_ping/1.0/
         https://didcomm.org/trust_ping/1.0/
     >>
-    use module org.sovrin.aca alias aca
+    use module io.picolabs.aca alias aca
     provides last_trust_pings
     shares __testing, last_trust_pings
   }

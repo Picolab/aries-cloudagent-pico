@@ -1,4 +1,4 @@
-ruleset org.sovrin.aca.discover-features {
+ruleset io.picolabs.aca.discover-features {
   meta {
     name "Aries Cloud Agent discover-features protocol"
     description <<
@@ -6,7 +6,7 @@ ruleset org.sovrin.aca.discover-features {
         did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/discover-features/1.0/
         https://didcomm.org/discover-features/1.0/
     >>
-    use module org.sovrin.aca alias aca
+    use module io.picolabs.aca alias aca
     shares __testing, acceptable_query, buildAnswer
   }
   global {
@@ -42,7 +42,7 @@ ruleset org.sovrin.aca.discover-features {
     buildAnswer = function(query){
       queryRE = query.replace("*",".*").as("RegExp")
       engine:listInstalledRIDs()
-      .filter(function(rid){rid.match(re#^org.sovrin.aca.#)})
+      .filter(function(rid){rid.match(re#^io.picolabs.aca.#)})
       .filter(function(rid){
         desc = engine:describeRuleset(rid){["meta","description"]}
         desc.match(queryRE)

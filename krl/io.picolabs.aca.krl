@@ -1,4 +1,4 @@
-ruleset org.sovrin.aca {
+ruleset io.picolabs.aca {
   meta {
     name "Aries Cloud Agent"
     description <<

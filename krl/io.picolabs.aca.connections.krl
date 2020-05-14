@@ -1,4 +1,4 @@
-ruleset org.sovrin.aca.connections {
+ruleset io.picolabs.aca.connections {
   meta {
     name "Aries Cloud Agent connections protocol"
     description <<
@@ -6,9 +6,9 @@ ruleset org.sovrin.aca.connections {
         did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/
         https://didcomm.org/connections/1.0/
     >>
-    use module org.sovrin.aca alias aca
+    use module io.picolabs.aca alias aca
     use module io.picolabs.wrangler alias wrangler
-    use module org.sovrin.aca.connections.ui alias invite
+    use module io.picolabs.aca.connections.ui alias invite
     shares __testing, invitation, html
   }
   global {

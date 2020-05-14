@@ -1,4 +1,4 @@
-ruleset org.sovrin.aca.bm_plugins {
+ruleset io.picolabs.aca.bm_plugins {
   meta {
     shares __testing, ruleset_available
   }

@@ -1,4 +1,4 @@
-ruleset org.sovrin.aca.basicmessage {
+ruleset io.picolabs.aca.basicmessage {
   meta {
     name "Aries Cloud Agent basicmessage protocol"
     description <<
@@ -6,7 +6,7 @@ ruleset org.sovrin.aca.basicmessage {
         did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/basicmessage/1.0/
         https://didcomm.org/basicmessage/1.0/
     >>
-    use module org.sovrin.aca alias aca
+    use module io.picolabs.aca alias aca
     use module io.picolabs.visual_params alias vp
     shares __testing, basicmessages
   }

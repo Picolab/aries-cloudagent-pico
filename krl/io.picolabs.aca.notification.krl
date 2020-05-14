@@ -1,11 +1,11 @@
-ruleset org.sovrin.aca.notification {
+ruleset io.picolabs.aca.notification {
   meta {
     description <<
       Aries RFC 0015: ACKs
         did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/notification/1.0/
         https://didcomm.org/notification/1.0/
     >>
-    use module org.sovrin.aca alias aca
+    use module io.picolabs.aca alias aca
     shares __testing
   }
   global {

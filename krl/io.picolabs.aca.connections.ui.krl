@@ -1,4 +1,4 @@
-ruleset org.sovrin.aca.connections.ui {
+ruleset io.picolabs.aca.connections.ui {
   meta {
     use module html
     provides html
@@ -46,7 +46,7 @@ $(function(){
 <p>You received this invitation because #{owner} wants to have a
 secure message connection with you.
 To accept the invitation, you must have the <em>Pico Agent App</em>
-(or another <a href="https://sovrin.org/">Sovrin</a>-compatible agent app).</p>
+(or another Aries-compatible agent app).</p>
 <p>Using your agent app, <span class="no-print">either </span>scan the QR Code below<span class="no-print">,
 or copy the URL from the location bar of your browser
 and paste it into your app</span>.</p>
