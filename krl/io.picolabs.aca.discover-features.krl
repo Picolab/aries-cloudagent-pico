@@ -42,7 +42,7 @@ ruleset io.picolabs.aca.discover-features {
     buildAnswer = function(query){
       queryRE = query.replace("*",".*").as("RegExp")
       engine:listInstalledRIDs()
-      .filter(function(rid){rid.match(re#^io.picolabs.aca.#)})
+      .filter(function(rid){rid.match(re#^io[.]picolabs[.]aca[.]#)})
       .filter(function(rid){
         desc = engine:describeRuleset(rid){["meta","description"]}
         desc.match(queryRE)
