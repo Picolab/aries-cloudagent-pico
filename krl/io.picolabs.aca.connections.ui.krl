@@ -45,7 +45,7 @@ $(function(){
 <span class="no-print">(wait, <a href="#confusion"><em>I'm</em> #{owner}!</a>)</span></p>
 <p>You received this invitation because #{owner} wants to have a
 secure message connection with you.
-To accept the invitation, you must have the <em>Pico Agent App</em>
+To accept the invitation, you must have an <em>ACA-Pico agent</em>
 (or another Aries-compatible agent app).</p>
 <p>Using your agent app, <span class="no-print">either </span>scan the QR Code below<span class="no-print">,
 or copy the URL from the location bar of your browser
