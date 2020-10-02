@@ -206,6 +206,7 @@ ruleset io.picolabs.aca {
       ent:cList := []
       ent:connections := {}
       ent:label := event:attr("label") || wrangler:name()
+    }
   }
   rule update_label {
     select when aca:new_label
