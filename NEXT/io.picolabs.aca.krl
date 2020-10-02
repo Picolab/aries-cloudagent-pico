@@ -12,7 +12,7 @@ ruleset io.picolabs.aca {
           Applying the digital signature with function `signField`
           Verifying digital signatures with function `verifySignatures`
         Aries RFC 0348: Transition Message Type to HTTPs
-          At Step 1 accepting both but generating only the old
+          At Step 2 accepting both and generating only the new
             old did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/
             new https://didcomm.org/
         Aries RFC 0046: Mediators and Relays
@@ -111,7 +111,7 @@ ruleset io.picolabs.aca {
       | null
     }
     prefix = function(){
-      "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/"
+      "https://didcomm.org/"
     }
     localServiceEndpoint = function(eci,eid){
       <<#{meta:host}/sky/event/#{eci}/#{eid}/didcomm/message>>
@@ -206,7 +206,6 @@ ruleset io.picolabs.aca {
       ent:cList := []
       ent:connections := {}
       ent:label := event:attr("label") || wrangler:name()
-    }
   }
   rule update_label {
     select when aca:new_label
