@@ -8,18 +8,11 @@ ruleset io.picolabs.aca.connections {
     >>
     use module io.picolabs.aca alias aca
     use module io.picolabs.wrangler alias wrangler
+    use module io.picolabs.did alias did
     use module io.picolabs.aca.connections.ui alias invite
-    shares __testing, invitation, html
+    shares invitation, html
   }
   global {
-    __testing = { "queries":
-      [ { "name": "__testing" }
-      , { "name": "invitation", "args": [ "label" ] }
-      ] , "events":
-      [ //{ "domain": "d1", "type": "t1" }
-      //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
-      ]
-    }
     connInviteMap = function(id,label,key,endpoint,routingKeys){
       minimal = {
         "@type": aca:prefix() + "connections/1.0/invitation",
@@ -72,20 +65,59 @@ ruleset io.picolabs.aca.connections {
       inviteId.isnull() => res |
         res.put("~thread",{"pthid":inviteId,"thid":res{"@id"}})
     }
+    tags = ["Aries","agent","connections"]
+    the_tags = tags.map(lc).sort().join(",")
+    connectionsChannel = function(c){
+      c["tags"].sort().join(",") == the_tags
+    }
     invitation = function(label){
-      uKR = wrangler:channel("agent")
+      host = "http://localhost:3000"
+      uKR = wrangler:channels().filter(connectionsChannel).head().klog("uKR")
       eci = uKR{"id"}
       im = connInviteMap(
         null,
         label || aca:label(),
-        uKR{["sovrin","indyPublic"]},
+        did:dids(eci).get("verifyKey"),
         aca:localServiceEndpoint(eci)
-      )
-      <<#{meta:host}/sky/cloud/#{eci}/#{meta:rid}/html.html>>
+      ).klog("im")
+      <<#{host}/sky/cloud/#{eci}/#{ctx:rid}/html.html>>
         + "?c_i=" + math:base64encode(im.encode())
     }
     html = function(c_i){
       invite:html(c_i)
+    }
+  }
+//
+// bookkeeping
+//
+  rule create_channel_for_invitation {
+    select when wrangler ruleset_installed where event:attr("rids") >< ctx:rid
+    pre {
+      add_did = function(v,k){
+        k == "allow" => v.append({"domain":"connections","name":"did"}) | v
+      }
+      add_rid = function(v,k){
+        k == "allow" => v.append({"rid":ctx:rid,"name":"*"}) | v
+      }
+      mainAgentTags = ["Aries","agent"].map(lc).sort().join(",")
+      mainAgentChannel = wrangler:channels().filter(function(c){
+        c["tags"].sort().join(",") == mainAgentTags
+      }).head()
+      eventPolicy = mainAgentChannel.get("eventPolicy").map(add_did)
+      queryPolicy = mainAgentChannel.get("queryPolicy").map(add_rid)
+    }
+    if ent:channelCreated.isnull() then
+      wrangler:createChannel(tags,eventPolicy,queryPolicy) setting(channel)
+    fired {
+      raise connections event "did" attributes {
+        "eci":channel.get("id")}
+      ent:channelCreated := true
+    }
+  }
+  rule create_a_new_did_for_invitations {
+    select when connections did
+    fired {
+      raise did event "requested" attributes event:attrs
     }
   }
 //
