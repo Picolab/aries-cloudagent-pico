@@ -94,7 +94,7 @@ ruleset io.picolabs.aca.connections {
     select when wrangler ruleset_installed where event:attr("rids") >< ctx:rid
     pre {
       add_did = function(v,k){
-        k == "allow" => v.append({"domain":"connections","name":"did"}) | v
+        k == "allow" => v.append({"domain":"aca_connections","name":"did"}) | v
       }
       add_rid = function(v,k){
         k == "allow" => v.append({"rid":ctx:rid,"name":"*"}) | v
@@ -109,13 +109,13 @@ ruleset io.picolabs.aca.connections {
     if ent:channelCreated.isnull() then
       wrangler:createChannel(tags,eventPolicy,queryPolicy) setting(channel)
     fired {
-      raise connections event "did" attributes {
+      raise aca_connections event "did" attributes {
         "eci":channel.get("id")}
       ent:channelCreated := true
     }
   }
   rule create_a_new_did_for_invitations {
-    select when connections did
+    select when aca_connections did
     fired {
       raise did event "requested" attributes event:attrs
     }
