@@ -37,6 +37,15 @@ ruleset io.picolabs.aca {
     shares prefix, label, lastHttpResponse 
   }
   global {
+    __testing = __testing
+      .put("events",__testing.get("events").filter(function(e){
+        domain = e.get("domain")
+        type = e.get("name")
+        attrs = e.get("attrs")
+        domain == "didcomm" && type == "message" && attrs >< "uri"
+        ||
+        domain == "aca" && (type == "new_label" || type == "deleted_connection")
+      }))
     routeFwdMap = function(to,pm){
       {
         "@type": "https://didcomm.org/routing/1.0/forward",
