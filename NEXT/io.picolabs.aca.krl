@@ -34,7 +34,7 @@ ruleset io.picolabs.aca {
     use module io.picolabs.wrangler alias wrangler
     provides packMsg, signField, verifySignatures,
       localServiceEndpoint, prefix, label, connections
-    shares prefix, label
+    shares prefix, label, lastHttpResponse 
   }
   global {
     routeFwdMap = function(to,pm){
@@ -115,6 +115,9 @@ ruleset io.picolabs.aca {
       vk => ent:connections{vk}
           | ent:cList.map(toConnection)
     }
+    lastHttpResponse = function() {
+      ent:last_http_response 
+    }
   }
 //
 // send ssi_agent_wire message
@@ -129,7 +132,7 @@ ruleset io.picolabs.aca {
       se,
       body=pm,
       headers={"content-type":"application/ssi-agent-wire"},
-      autosend = {"eci": meta:eci, "domain": "http", "type": "post"}
+      autosend = {"eci": event:eci, "domain": "http", "type": "post", "name": "post"}
     )
   }
   rule save_last_http_response {
@@ -147,10 +150,10 @@ ruleset io.picolabs.aca {
       outer = math:base64decode(protected).decode()
       kids = outer{"recipients"}
         .map(function(x){x{["header","kid"]}})
-      my_vk = wrangler:channel(meta:eci){["sovrin","indyPublic"]}
+      my_vk = wrangler:channel(event:eci){["sovrin","indyPublic"]}
       sanity = (kids >< my_vk)
         .klog("sanity")
-      all = indy:unpack(event:attrs,meta:eci)
+      all = indy:unpack(event:attrs,event:eci)
       msg = all{"message"}.decode()
       eventSpec = eventFromType(msg{"@type"})
     }
@@ -187,7 +190,7 @@ ruleset io.picolabs.aca {
 // bookkeeping
 //
   rule create_incoming_channel_on_installation {
-    select when wrangler ruleset_added where event:attr("rids") >< meta:rid
+    select when wrangler ruleset_added where event:attr("rids") >< ctx:rid
     if wrangler:channel("agent").isnull() then
       wrangler:createChannel(meta:picoId,"agent","aries"/* TODO policy */)
     always {
