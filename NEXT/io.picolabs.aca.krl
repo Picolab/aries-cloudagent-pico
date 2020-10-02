@@ -31,10 +31,12 @@ ruleset io.picolabs.aca {
           Available thru provided function `connections`
           Updatable thru events `aca:new_connection`, `aca:deleted_connection`
     >>
+    configure using host = "http://localhost:3000"
     use module io.picolabs.wrangler alias wrangler
+    use module io.picolabs.did alias did
     provides packMsg, signField, verifySignatures,
-      localServiceEndpoint, prefix, label, connections
-    shares prefix, label, lastHttpResponse 
+      localServiceEndpoint, prefix, label, connections, host
+    shares prefix, label, lastHttpResponse
   }
   global {
     __testing = __testing
@@ -114,7 +116,7 @@ ruleset io.picolabs.aca {
       "https://didcomm.org/"
     }
     localServiceEndpoint = function(eci,eid){
-      <<#{meta:host}/sky/event/#{eci}/#{eid}/didcomm/message>>
+      <<#{host}/sky/event/#{eci}/#{eid}/didcomm/message>>
     }
     label = function(){
       ent:label
@@ -159,7 +161,7 @@ ruleset io.picolabs.aca {
       outer = math:base64decode(protected).decode()
       kids = outer{"recipients"}
         .map(function(x){x{["header","kid"]}})
-      my_vk = wrangler:channel(event:eci){["sovrin","indyPublic"]}
+      my_vk = did:dids(event:eci).get("verifyKey")
       sanity = (kids >< my_vk)
         .klog("sanity")
       all = indy:unpack(event:attrs,event:eci)
@@ -199,13 +201,35 @@ ruleset io.picolabs.aca {
 // bookkeeping
 //
   rule create_incoming_channel_on_installation {
-    select when wrangler ruleset_added where event:attr("rids") >< ctx:rid
-    if wrangler:channel("agent").isnull() then
-      wrangler:createChannel(meta:picoId,"agent","aries"/* TODO policy */)
-    always {
+    select when wrangler ruleset_installed where event:attr("rids") >< ctx:rid
+    pre {
+      tags = ["Aries","agent"]
+      eventPolicy = {
+        "allow": [
+          { "domain": "didcomm", "name": "message" },
+          { "domain": "aca", "name": "new_label" },
+        ],
+        "deny": []
+      }
+      queryPolicy = {
+        "allow": [
+          { "rid": ctx:rid, "name": "*" }
+        ],
+        "deny": []
+      }
+      the_tags = tags.sort().join(",")
+      eci = ctx:channels
+        .filter(function(c){c["tags"].sort().join(",") == the_tags})
+        .map(function(c){c["id"]})
+        .head()
+    }
+    if ent:cList.isnull() then noop()
+    fired {
       ent:cList := []
       ent:connections := {}
-      ent:label := event:attr("label") || wrangler:name()
+      ent:label := event:attr("label") || "no label" // should use pico name
+      raise engine_ui event "new_channel" attributes {
+        "tags":tags,"eventPolicy":eventPolicy,"queryPolicy":queryPolicy} if eci.isnull()
     }
   }
   rule update_label {
