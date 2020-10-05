@@ -1,6 +1,6 @@
 ruleset io.picolabs.did {
   meta {
-    provides dids
+    provides dids, unpack
     shares newDID, dids
   }
   global {
@@ -13,6 +13,9 @@ ruleset io.picolabs.did {
     dids = function(eci){
       eci => ent:dids{eci}.nosecrets()
            | ent:dids.map(nosecrets)
+    }
+    unpack = function(attrs,eci){
+      ursa:unpack(attrs,ent:dids{eci})
     }
   }
   rule create_and_save_did {

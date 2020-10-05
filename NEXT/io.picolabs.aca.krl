@@ -164,7 +164,7 @@ ruleset io.picolabs.aca {
       my_vk = did:dids(event:eci).get("verifyKey")
       sanity = (kids >< my_vk)
         .klog("sanity")
-      all = indy:unpack(event:attrs,event:eci)
+      all = did:unpack(event:attrs,event:eci)
       msg = all{"message"}.decode()
       eventSpec = eventFromType(msg{"@type"})
     }
