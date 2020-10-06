@@ -77,7 +77,7 @@ ruleset io.picolabs.aca.connections {
       im = connInviteMap(
         null,
         label || aca:label(),
-        did:dids(eci).get("verifyKey"),
+        did:dids(eci).get("ariesPublicKey"),
         aca:localServiceEndpoint(eci)
       ).klog("im")
       <<#{host}/sky/cloud/#{eci}/#{ctx:rid}/html.html>>

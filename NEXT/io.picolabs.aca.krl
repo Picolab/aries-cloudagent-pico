@@ -161,7 +161,7 @@ ruleset io.picolabs.aca {
       outer = math:base64decode(protected).decode()
       kids = outer{"recipients"}
         .map(function(x){x{["header","kid"]}})
-      my_vk = did:dids(event:eci).get("verifyKey")
+      my_vk = did:dids(event:eci).get("ariesPublicKey")
       sanity = (kids >< my_vk)
         .klog("sanity")
       all = did:unpack(event:attrs,event:eci)
