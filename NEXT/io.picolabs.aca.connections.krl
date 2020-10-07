@@ -164,7 +164,7 @@ ruleset io.picolabs.aca.connections {
       new_did = did:dids(chann{"id"})
 .klog("new_did")
       my_vk = new_did{"ariesPublicKey"}
-      my_did = new_did{"id"}
+      my_did = new_did{"did"}
       ri = event:attr("routing").klog("routing information")
       rks = ri => ri{"their_routing"} | null
       endpoint = ri => ri{"endpoint"} | aca:localServiceEndpoint(chann{"id"})
@@ -218,7 +218,7 @@ meta_eci = event:eci.klog("meta_eci")
       new_did = did:dids(chann{"id"})
 .klog("new_did")
       my_vk = new_did{"ariesPublicKey"}
-      my_did = new_did{"id"}
+      my_did = new_did{"did"}
       ri = event:attr("routing").klog("routing information")
       rks = ri => ri{"their_routing"} | null
       endpoint = ri => ri{"endpoint"} | aca:localServiceEndpoint(chann{"id"})
