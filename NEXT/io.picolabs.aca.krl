@@ -73,7 +73,7 @@ ruleset io.picolabs.aca {
         .head().reverse()
     }
     signField = function(my_did,my_vk,field){
-      timestamp_bytes = toByteArray(time:now().time:strftime("%s"));
+      timestamp_bytes = toByteArray(time:strftime(time:now(),"%s"));
       sig_data_bytes = timestamp_bytes
         .append(field.encode().split("").map(function(x){ord(x)}));
       {
