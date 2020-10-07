@@ -78,9 +78,9 @@ ruleset io.picolabs.aca {
         .append(field.encode().split("").map(function(x){ord(x)}));
       {
         "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/signature/1.0/ed25519Sha512_single",
-        "signature": indy:crypto_sign(sig_data_bytes,my_did),
+        "signature": did:crypto_sign(sig_data_bytes,my_did),
         "signer": my_vk,
-        "sig_data": indy:sig_data(sig_data_bytes)
+        "sig_data": ursa:sig_data(sig_data_bytes)
       }
     }
     verifySignedField = function(signed_field){

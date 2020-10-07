@@ -1,6 +1,6 @@
 ruleset io.picolabs.did {
   meta {
-    provides dids, unpack, pack
+    provides dids, unpack, crypto_sign, pack
     shares newDID, dids
   }
   global {
@@ -13,6 +13,11 @@ ruleset io.picolabs.did {
     dids = function(eci){
       eci => ent:dids{eci}.nosecrets()
            | ent:dids.map(nosecrets)
+    }
+    crypto_sign = function(bytes,did){
+      this_one = function(d){d{"did"}==did}
+      the_did = ent:dids.filter(this_one).head()
+      ursa:crypto_sign(bytes,the_did)
     }
     unpack = function(attrs,eci){
       ursa:unpack(attrs,ent:dids{eci})
