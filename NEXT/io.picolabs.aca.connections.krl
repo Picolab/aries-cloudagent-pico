@@ -86,13 +86,7 @@ ruleset io.picolabs.aca.connections {
     html = function(c_i){
       invite:html(c_i)
     }
-  }
-//
-// bookkeeping
-//
-  rule create_channel_for_invitation {
-    select when wrangler ruleset_installed where event:attr("rids") >< ctx:rid
-    pre {
+    createChannel = defaction(label){
       add_did = function(v,k){
         k == "allow" => v.append({"domain":"aca_connections","name":"did"}) | v
       }
@@ -103,11 +97,20 @@ ruleset io.picolabs.aca.connections {
       mainAgentChannel = wrangler:channels().filter(function(c){
         c["tags"].sort().join(",") == mainAgentTags
       }).head()
+      the_tags = label => tags.append(label) | tags
       eventPolicy = mainAgentChannel.get("eventPolicy").map(add_did)
       queryPolicy = mainAgentChannel.get("queryPolicy").map(add_rid)
+      wrangler:createChannel(the_tags,eventPolicy,queryPolicy) setting(channel)
+      return channel
     }
+  }
+//
+// bookkeeping
+//
+  rule create_channel_for_invitation {
+    select when wrangler ruleset_installed where event:attr("rids") >< ctx:rid
     if ent:channelCreated.isnull() then
-      wrangler:createChannel(tags,eventPolicy,queryPolicy) setting(channel)
+      createChannel() setting(channel)
     fired {
       raise aca_connections event "did" attributes {
         "eci":channel.get("id")}
