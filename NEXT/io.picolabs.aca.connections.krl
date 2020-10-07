@@ -133,9 +133,9 @@ ruleset io.picolabs.aca.connections {
       their_label = msg{"label"}
     }
     if their_label then
-      wrangler:createChannel(meta:picoId,their_label,"connection")
-        setting(channel)
+      createChannel(their_label) setting(channel)
     fired {
+      raise did event "requested" attributes {"eci":channel{"id"}}
       raise aca_connections event "request_accepted"
         attributes {
           "message": msg,
@@ -161,12 +161,15 @@ ruleset io.picolabs.aca.connections {
       se = service{"serviceEndpoint"}
       their_rks = service{"routingKeys"}.defaultsTo([])
       chann = event:attr("channel")
-      my_did = chann{"id"}
-      my_vk = chann{["sovrin","indyPublic"]}
+      new_did = did:dids(chann{"id"})
+.klog("new_did")
+      my_vk = new_did{"ariesPublicKey"}
+      my_did = new_did{"id"}
       ri = event:attr("routing").klog("routing information")
       rks = ri => ri{"their_routing"} | null
-      endpoint = ri => ri{"endpoint"} | aca:localServiceEndpoint(my_did)
+      endpoint = ri => ri{"endpoint"} | aca:localServiceEndpoint(chann{"id"})
       rm = connResMap(req_id, my_did, my_vk, endpoint,rks)
+.klog("rm")
       c = {
         "created": time:now(),
         "label": msg{"label"},
@@ -176,6 +179,8 @@ ruleset io.picolabs.aca.connections {
         "their_endpoint": se,
         "their_routing": their_rks,
       }
+.klog("c")
+meta_eci = event:eci.klog("meta_eci")
       pm = aca:packMsg(their_vk,rm,meta:eci)
     }
     fired {
@@ -195,9 +200,9 @@ ruleset io.picolabs.aca.connections {
       their_label = msg{"label"}
     }
     if msg && their_label then
-      wrangler:createChannel(meta:picoId,their_label,"connection")
-        setting(channel)
+      createChannel(their_label) setting(channel)
     fired {
+      raise did event "requested" attributes {"eci":channel{"id"}}
       raise aca_connections event "invitation_accepted"
         attributes {
           "invitation": msg,
@@ -210,11 +215,13 @@ ruleset io.picolabs.aca.connections {
     pre {
       im = event:attr("invitation")
       chann = event:attr("channel")
-      my_did = chann{"id"}
-      my_vk = chann{["sovrin","indyPublic"]}
+      new_did = did:dids(chann{"id"})
+.klog("new_did")
+      my_vk = new_did{"ariesPublicKey"}
+      my_did = new_did{"id"}
       ri = event:attr("routing").klog("routing information")
       rks = ri => ri{"their_routing"} | null
-      endpoint = ri => ri{"endpoint"} | aca:localServiceEndpoint(my_did)
+      endpoint = ri => ri{"endpoint"} | aca:localServiceEndpoint(chann{"id"})
       rm = connReqMap(aca:label(),my_did,my_vk,endpoint,rks,im{"@id"})
         .klog("connections request")
       reqURL = im{"serviceEndpoint"}
@@ -222,11 +229,10 @@ ruleset io.picolabs.aca.connections {
         "label": im{"label"},
         "my_did": my_did,
         "@id": rm{"@id"},
-        "my_did": my_did,
         "their_vk": im{"recipientKeys"}.head(),
         "their_routing": im{"routingKeys"}.defaultsTo([]),
       }
-      packedBody = aca:packMsg(pc{"their_vk"},rm,my_did)
+      packedBody = aca:packMsg(pc{"their_vk"},rm,chann{"id"})
     }
     fired {
       ent:pending_conn := ent:pending_conn.defaultsTo([]).append(pc)

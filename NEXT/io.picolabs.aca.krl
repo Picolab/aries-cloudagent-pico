@@ -36,7 +36,7 @@ ruleset io.picolabs.aca {
     use module io.picolabs.did alias did
     provides packMsg, signField, verifySignatures,
       localServiceEndpoint, prefix, label, connections, host
-    shares prefix, label, lastHttpResponse
+    shares prefix, label, lastHttpResponse, connections
   }
   global {
     __testing = __testing
@@ -55,12 +55,12 @@ ruleset io.picolabs.aca {
         "msg": pm
       }
     }
-    packMsg = function(their_vk,msg,my_did,their_routing){
-      packedMsg = indy:pack(msg.encode(),[their_vk],my_did)
+    packMsg = function(their_vk,msg,eci,their_routing){
+      packedMsg = did:pack(msg.encode(),[their_vk],eci)
       their_routing.defaultsTo([]).reduce(
         function(a,rk){
           fm = routeFwdMap(a[1],a.head());
-          [indy:pack(fm.encode(),[rk],my_did),rk]
+          [did:pack(fm.encode(),[rk],eci),rk]
         },
         [packedMsg,their_vk]
       ).head()
@@ -116,7 +116,8 @@ ruleset io.picolabs.aca {
       "https://didcomm.org/"
     }
     localServiceEndpoint = function(eci,eid){
-      <<#{host}/sky/event/#{eci}/#{eid}/didcomm/message>>
+      the_eid = eid => eid | "none"
+      <<#{host}/sky/event/#{eci}/#{the_eid}/didcomm/message>>
     }
     label = function(){
       ent:label
