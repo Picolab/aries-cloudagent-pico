@@ -210,6 +210,7 @@ ruleset io.picolabs.aca {
           { "domain": "didcomm", "name": "message" },
           { "domain": "aca", "name": "new_label" },
           { "domain": "aca", "name": "deleted_connection" },
+          { "domain": "http", "name": "post" },
         ],
         "deny": []
       }
