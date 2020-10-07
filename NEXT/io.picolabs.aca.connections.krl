@@ -180,8 +180,7 @@ ruleset io.picolabs.aca.connections {
         "their_routing": their_rks,
       }
 .klog("c")
-meta_eci = event:eci.klog("meta_eci")
-      pm = aca:packMsg(their_vk,rm,meta:eci)
+      pm = aca:packMsg(their_vk,rm,event:eci)
     }
     fired {
       raise aca event "new_connection" attributes c
