@@ -60,7 +60,7 @@ ruleset io.picolabs.aca.basicmessage {
       se = conn{"their_endpoint"}
       wmsg = ent:basicmessages{their_vk}.defaultsTo([])
         .append(bm.put("from","outgoing")
-                  .put("color",vp:colorRGB().join(","))
+                  .put("color",ent:color)
                 )
     }
     if se then noop()
@@ -76,8 +76,10 @@ ruleset io.picolabs.aca.basicmessage {
 //
   rule init {
     select when wrangler ruleset_added where event:attr("rids") >< meta:rid
+    if ent:basicmessages.isnull() then noop()
     fired {
       ent:basicmessages := {}
+      ent:color := vp:colorRGB().join(",")
     }
   }
 }
