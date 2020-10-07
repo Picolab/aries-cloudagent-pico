@@ -16,7 +16,7 @@ ruleset io.picolabs.did {
     }
     crypto_sign = function(bytes,did){
       this_one = function(d){d{"did"}==did}
-      the_did = ent:dids.filter(this_one).head()
+      the_did = ent:dids.values().filter(this_one).head()
       ursa:crypto_sign(bytes,the_did)
     }
     unpack = function(attrs,eci){
