@@ -23,7 +23,10 @@ ruleset io.picolabs.did {
       ursa:unpack(attrs,ent:dids{eci})
     }
     pack = function(msg,key,eci){
-      ursa:pack(msg,key,ent:dids{eci})
+      this_one = function(d){d{"did"}==eci}
+      the_did = ent:dids >< eci => ent:dids{eci}
+              | ent:dids.values().filter(this_one).head()
+      ursa:pack(msg,key,the_did)
     }
   }
   rule create_and_save_did {
