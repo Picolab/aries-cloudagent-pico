@@ -7,17 +7,13 @@ ruleset io.picolabs.aca.basicmessage {
         https://didcomm.org/basicmessage/1.0/
     >>
     use module io.picolabs.aca alias aca
-    shares __testing, basicmessages
+    shares basicmessages
   }
   global {
-    __testing = { "queries":
-      [ { "name": "__testing" }
-      , { "name": "basicmessages", "args": [ "their_vk" ] }
-      ] , "events":
-      [ { "domain": "aca_basicmessage", "type": "new_content", "attrs": [ "their_vk", "content" ] }
-      //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
-      ]
-    }
+    __testing = __testing
+      .put("events",__testing.get("events").filter(function(e){
+        e.get("domain") == "aca_basicmessage"
+      }))
     basicmessages = function(their_vk) {
       ent:basicmessages{their_vk}
     }
