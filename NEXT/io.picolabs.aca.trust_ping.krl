@@ -8,17 +8,9 @@ ruleset io.picolabs.aca.trust_ping {
     >>
     use module io.picolabs.aca alias aca
     provides last_trust_pings
-    shares __testing, last_trust_pings
+    shares last_trust_pings
   }
   global {
-    __testing = { "queries":
-      [ { "name": "__testing" }
-      , { "name": "last_trust_pings" }
-      ] , "events":
-      [ { "domain": "aca_trust_ping", "type": "new_ping", "attrs": [ "their_vk" ] }
-      //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
-      ]
-    }
     last_trust_pings = function(){
       {
         "lastPingReceived": ent:lastPingReceived,
