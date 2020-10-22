@@ -22,7 +22,7 @@ ruleset redir {
       qs = oob.split("?").tail().join("?")
       args = qs2args(qs)
       invite64 = args.get("c_i") || args.get("d_m")
-      invite64fix = invite64.replace(re#%3d$#ig)
+      invite64fix = invite64.replace(re#%3d$#ig,"=")
       math:base64decode(invite64fix).decode()
     }
     redirRE = re#^https?://[a-zA-Z0-9][a-zA-Z0-9.-/]+$#
