@@ -25,7 +25,7 @@ ruleset redir {
       invite64fix = invite64.replace(re#%3d$#ig,"=")
       math:base64decode(invite64fix).decode()
     }
-    redirRE = re#^https?://[a-zA-Z0-9][a-zA-Z0-9.-/]+$#
+    redirRE = re#^https?://[a-zA-Z0-9][a-zA-Z0-9.:/-]+$#
     oobRE =re#^.+://[^?]+[?].*(c_i=|d_m=)eyJ.+$#
     uri2message = function(uri){
       redir = uri.match(redirRE)
