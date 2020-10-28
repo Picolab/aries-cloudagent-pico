@@ -25,10 +25,10 @@ ruleset redir {
       invite64fix = invite64.replace(re#%3d$#ig,"=")
       math:base64decode(invite64fix).decode()
     }
-    redirRE = re#^https?://[a-zA-Z0-9][a-zA-Z0-9.:/-]+$#
     oobRE =re#^.+://[^?]+[?].*(c_i=|d_m=)eyJ.+$#
+    httpRE = re#^https?://#
     uri2message = function(uri){
-      redir = uri.match(redirRE)
+      redir = uri.match(httpRE) && (uri.length() < 240 || not uri.match(oobRE))
       res = redir => http:get(uri,dontFollowRedirect=true) | null
       ok = redir && res{"status_code"} == 302
       location = ok => res{["headers","location"]} | null
