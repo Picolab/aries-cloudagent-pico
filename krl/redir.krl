@@ -30,7 +30,7 @@ ruleset redir {
     uri2message = function(uri){
       redir = uri.match(httpRE) && (uri.length() < 240 || not uri.match(oobRE))
       res = redir => http:get(uri,dontFollowRedirect=true) | null
-      ok = redir && res{"status_code"} == 302
+      ok = redir && res{"status_code"}.match(re#30[1-2]#)
       location = ok => res{["headers","location"]} | null
       oob = location && location.match(oobRE) => location
           | uri.match(oobRE) => uri
