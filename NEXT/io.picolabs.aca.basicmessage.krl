@@ -70,7 +70,7 @@ ruleset io.picolabs.aca.basicmessage {
 // bookkeeping
 //
   rule init {
-    select when wrangler ruleset_added where event:attr("rids") >< meta:rid
+    select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
     if ent:basicmessages.isnull() then noop()
     fired {
       ent:basicmessages := {}
