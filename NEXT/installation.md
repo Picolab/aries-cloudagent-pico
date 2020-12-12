@@ -21,7 +21,7 @@ Assuming a `global` list of `rids` which are required to be installed in order.
 rule agent_using_connections {
   select when aca new_connections_agent
     eci re#(.+)# setting(eci)
-  forEach rids setting(rid)
+  foreach rids setting(rid)
     pre {
       url = make_url(rid)
     }
