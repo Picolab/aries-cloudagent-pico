@@ -22,14 +22,14 @@ rule agent_using_connections {
   select when aca new_connections_agent
     eci re#(.+)# setting(eci)
   forEach rids setting(rid)
-  pre {
-    url = make_url(rid)
-  }
-  event:send({"eci":eci,
-              "domain":"wrangler",
-              "type":"install_ruleset_request",
-              "attrs":{"url":url}
-             })
+    pre {
+      url = make_url(rid)
+    }
+    event:send({"eci":eci,
+                "domain":"wrangler",
+                "type":"install_ruleset_request",
+                "attrs":{"url":url}
+               })
 }
 ```
 
