@@ -22,10 +22,13 @@ The following rulesets need to be installed
 in a pico in order for it to be an Aries cloud agent:
 
 [io.picolabs.did](https://raw.githubusercontent.com/Picolab/aries-cloudagent-pico/master/NEXT/io.picolabs.did.krl)
+
 [io.picolabs.aca](https://raw.githubusercontent.com/Picolab/aries-cloudagent-pico/master/NEXT/io.picolabs.aca.krl)
 
 [html](https://raw.githubusercontent.com/Picolab/aries-cloudagent-pico/master/krl/html.krl)
+
 [io.picolabs.aca.connections.ui](https://raw.githubusercontent.com/Picolab/aries-cloudagent-pico/master/NEXT/io.picolabs.aca.connections.ui.krl)
+
 [io.picolabs.aca.connections](https://raw.githubusercontent.com/Picolab/aries-cloudagent-pico/master/NEXT/io.picolabs.aca.connections.krl)
 
 ### Optional rulesets
