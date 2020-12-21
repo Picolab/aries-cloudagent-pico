@@ -12,3 +12,27 @@ When a KRL developer _needs_ a DID and key pairs, these will be provided by a ne
 
 This folder will hold the KRL rulesets for this ACA-Pico project which are intended for use with the pico-engine at versions >1.0.0
 since many of them will ~be broken and~ need to be adjusted for NEXT.
+
+## Installation into a pico
+
+### Required rulesets
+
+The following rulesets need to be installed
+(in this order (because of module dependencies))
+in a pico in order for it to be an Aries cloud agent:
+
+[io.picolabs.did](https://raw.githubusercontent.com/Picolab/aries-cloudagent-pico/master/NEXT/io.picolabs.did.krl)
+[io.picolabs.aca](https://raw.githubusercontent.com/Picolab/aries-cloudagent-pico/master/NEXT/io.picolabs.aca.krl)
+
+[html](https://raw.githubusercontent.com/Picolab/aries-cloudagent-pico/master/krl/html.krl)
+[io.picolabs.aca.connections.ui](https://raw.githubusercontent.com/Picolab/aries-cloudagent-pico/master/NEXT/io.picolabs.aca.connections.ui.krl)
+[io.picolabs.aca.connections](https://raw.githubusercontent.com/Picolab/aries-cloudagent-pico/master/NEXT/io.picolabs.aca.connections.krl)
+
+### Optional rulesets
+
+Other rulesets that may be of interest include:
+
+[io.picolabs.aca.basicmessage](https://raw.githubusercontent.com/Picolab/aries-cloudagent-pico/master/NEXT/io.picolabs.aca.basicmessage.krl)
+
+[io.picolabs.aca.trust_ping](https://raw.githubusercontent.com/Picolab/aries-cloudagent-pico/master/NEXT/io.picolabs.aca.trust_ping.krl)
+
