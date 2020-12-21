@@ -80,7 +80,7 @@ ruleset io.picolabs.aca.connections {
         did:dids(eci).get("ariesPublicKey"),
         aca:localServiceEndpoint(eci)
       ).klog("im")
-      <<#{host}/sky/cloud/#{eci}/#{ctx:rid}/html.html>>
+      <<#{host}/sky/cloud/#{eci}/#{meta:rid}/html.html>>
         + "?c_i=" + math:base64encode(im.encode())
     }
     html = function(c_i){
@@ -91,7 +91,7 @@ ruleset io.picolabs.aca.connections {
         k == "allow" => v.append({"domain":"aca_connections","name":"did"}) | v
       }
       add_rid = function(v,k){
-        k == "allow" => v.append({"rid":ctx:rid,"name":"*"}) | v
+        k == "allow" => v.append({"rid":meta:rid,"name":"*"}) | v
       }
       mainAgentTags = ["Aries","agent"].map(lc).sort().join(",")
       mainAgentChannel = wrangler:channels().filter(function(c){
@@ -108,7 +108,7 @@ ruleset io.picolabs.aca.connections {
 // bookkeeping
 //
   rule create_channel_for_invitation {
-    select when wrangler ruleset_installed where event:attr("rids") >< ctx:rid
+    select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
     if ent:channelCreated.isnull() then
       createChannel() setting(channel)
     fired {

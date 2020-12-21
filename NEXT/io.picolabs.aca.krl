@@ -202,7 +202,7 @@ ruleset io.picolabs.aca {
 // bookkeeping
 //
   rule create_incoming_channel_on_installation {
-    select when wrangler ruleset_installed where event:attr("rids") >< ctx:rid
+    select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
     pre {
       tags = ["Aries","agent"]
       eventPolicy = {
@@ -216,12 +216,12 @@ ruleset io.picolabs.aca {
       }
       queryPolicy = {
         "allow": [
-          { "rid": ctx:rid, "name": "*" }
+          { "rid": meta:rid, "name": "*" }
         ],
         "deny": []
       }
       the_tags = tags.sort().join(",")
-      eci = ctx:channels
+      eci = wrangler:channels()
         .filter(function(c){c["tags"].sort().join(",") == the_tags})
         .map(function(c){c["id"]})
         .head()
