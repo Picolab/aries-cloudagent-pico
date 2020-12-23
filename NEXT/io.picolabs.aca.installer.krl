@@ -64,9 +64,6 @@ ruleset io.picolabs.aca.installer {
       needed = function(name){
         event:attrs >< name && event:attr(name).match(re#^y#i)
       }
-      connections_installation = needed("connections")
-      trust_ping_installation = needed("trust_ping")
-      basicmessage_installation = needed("basicmessage")
     }
     fired {
       raise aca_installer event "base_install_request"
