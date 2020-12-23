@@ -230,7 +230,7 @@ ruleset io.picolabs.aca {
     fired {
       ent:cList := []
       ent:connections := {}
-      ent:label := event:attr("label") || "no label" // should use pico name
+      ent:label := event:attr("label") || wrangler:name()
       raise engine_ui event "new_channel" attributes {
         "tags":tags,"eventPolicy":eventPolicy,"queryPolicy":queryPolicy} if eci.isnull()
     }
