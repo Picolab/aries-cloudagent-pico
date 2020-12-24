@@ -5,7 +5,6 @@ ruleset io.picolabs.aca.installer {
                   into an Aries cloud agent
                 >>
     use module io.picolabs.wrangler alias wrangler
-    shares __testing
   }
   global {
     base_rids = [
@@ -27,10 +26,7 @@ ruleset io.picolabs.aca.installer {
       ]
     }
     eventPolicy = {
-      "allow": [
-        { "domain": "aca_installer", "name": "*" },
-        { "domain": "wrangler", "name": "install_ruleset_request" }
-      ],
+      "allow": [ { "domain": "aca_installer", "name": "install_request" }, ],
       "deny": []
     }
     queryPolicy = {
