@@ -48,6 +48,14 @@ ruleset io.picolabs.aca.installer {
         NO => noop()
       }
     }
+    channel_eci = function(tags){
+      str_tags = tags.typeof()=="Array" => tags.join(",") | tags
+      cf_tags = str_tags.lc().split(",").sort().join(",")
+      ctx:channels
+        .filter(function(c){c{"tags"}.sort().join(",") == cf_tags})
+        .map(function(c){c{"id"}})
+        .head()
+    }
   }
   rule create_channel {
     select when wrangler ruleset_installed
@@ -58,8 +66,16 @@ ruleset io.picolabs.aca.installer {
       ent:channel := channel
     }
   }
-  rule do_an_installation {
+  rule trigger_installation_on_self {
     select when aca_installer install_request
+    event:send({
+      "eci":channel_eci(["system","self"]),
+      "domain": "aca_installer", "type":"install_request_on_self",
+      "attrs": event:attrs
+    })
+  }
+  rule do_an_installation {
+    select when aca_installer install_request_on_self
     pre {
       needed = function(name){
         event:attrs >< name && event:attr(name).match(re#^y#i)
@@ -70,7 +86,7 @@ ruleset io.picolabs.aca.installer {
       raise aca_installer event "connections_install_request" if needed("connections")
       raise aca_installer event "trust_ping_install_request" if needed("trust_ping")
       raise aca_installer event "basicmessage_install_request" if needed("basicmessage")
-      raise wrangler event "uninstall_ruleset_request" attributes {"rid": meta:rid}
+      raise aca_installer event "cleanup"
     }
   }
   rule base_installation {
@@ -90,5 +106,12 @@ ruleset io.picolabs.aca.installer {
   rule basicmessage_installation {
     select when aca_installer basicmessage_install_request
     install_request("io.picolabs.aca.basicmessage")
+  }
+  rule clean_up {
+    select when aca_installer cleanup
+    ctx:delChannel(ent:channel{"id"})
+    fired {
+      raise wrangler event "uninstall_ruleset_request" attributes {"rid": meta:rid}
+    }
   }
 }
