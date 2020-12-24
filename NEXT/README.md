@@ -39,3 +39,18 @@ Other rulesets that may be of interest include:
 
 [io.picolabs.aca.trust_ping](https://raw.githubusercontent.com/Picolab/aries-cloudagent-pico/master/NEXT/io.picolabs.aca.trust_ping.krl)
 
+### Semi-automating ruleset installation
+
+You may now install just one ruleset into a pico which you wish to make an Aries cloud agent:
+
+[io.picolabs.aca.installer](https://raw.githubusercontent.com/Picolab/aries-cloudagent-pico/master/NEXT/io.picolabs.aca.installer.krl)
+
+Once the installer ruleset is in the pico:
+
+1. Locate the ECI of the channel it created with tags `aca` and `installer`
+1. Use that ECI to send a `aca_installer:install_request` with optional attributes named
+    - "connections" set to "yes" if you want to use the connections protocol
+    - "trust_ping" set to "yes" if you want to use the trust_ping protocol
+    - "basicmessage" set to "yes" if you want to use the basicmessage protocol
+
+The ruleset will install the necessary rulesets and then delete itself and the channel created in step 1.
