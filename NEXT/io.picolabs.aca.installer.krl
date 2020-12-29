@@ -44,14 +44,6 @@ ruleset io.picolabs.aca.installer {
         NO => noop()
       }
     }
-    channel_eci = function(tags){
-      str_tags = tags.typeof()=="Array" => tags.join(",") | tags
-      cf_tags = str_tags.lc().split(",").sort().join(",")
-      ctx:channels
-        .filter(function(c){c{"tags"}.sort().join(",") == cf_tags})
-        .map(function(c){c{"id"}})
-        .head()
-    }
   }
   rule create_channel {
     select when wrangler ruleset_installed
@@ -65,7 +57,7 @@ ruleset io.picolabs.aca.installer {
   rule trigger_installation_on_self {
     select when aca_installer install_request
     event:send({
-      "eci":channel_eci(["system","self"]),
+      "eci":wrangler:channels(["system","self"]).head().get("id"),
       "domain": "aca_installer", "type":"install_request_on_self",
       "attrs": event:attrs
     })
