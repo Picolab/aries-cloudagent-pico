@@ -21,7 +21,12 @@ ruleset io.picolabs.aca.installer {
          {
            "domain": "aca_installer",
            "name": "install_request",
-           "attrs": [ "connections", "basicmessage", "trust_ping" ]
+           "attrs": [
+             "connections",
+             "basicmessage",
+             "trust_ping",
+             "discover-features",
+           ]
          }
       ]
     }
@@ -74,6 +79,7 @@ ruleset io.picolabs.aca.installer {
       raise aca_installer event "connections_install_request" if needed("connections")
       raise aca_installer event "trust_ping_install_request" if needed("trust_ping")
       raise aca_installer event "basicmessage_install_request" if needed("basicmessage")
+      raise aca_installer event "discover_features_install_request" if needed("discover-features")
       raise aca_installer event "cleanup"
     }
   }
@@ -94,6 +100,10 @@ ruleset io.picolabs.aca.installer {
   rule basicmessage_installation {
     select when aca_installer basicmessage_install_request
     install_request("io.picolabs.aca.basicmessage")
+  }
+  rule discover_features_installation {
+    select when aca_installer discover_features_install_request
+    install_request("io.picolabs.aca.discover-features")
   }
   rule clean_up {
     select when aca_installer cleanup
