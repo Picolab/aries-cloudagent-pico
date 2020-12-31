@@ -70,7 +70,7 @@ ruleset io.picolabs.aca.discover-features {
       ok = query.acceptable_query()
       answerArray = ok => buildAnswer(query) | null
       dm = ok => disclosureMap(msg{"@id"},answerArray) | null
-      pm = dm => aca:packMsg(their_vk,rm,conn{"my_did"}) | null
+      pm = dm => aca:packMsg(their_vk,dm,conn{"my_did"}) | null
     }
     if pm then noop()
     fired {
