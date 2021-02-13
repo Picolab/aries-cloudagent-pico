@@ -62,8 +62,12 @@ ruleset io.picolabs.aca.connections {
         "label": label,
         "connection": connMap(my_did, my_vk, endpoint, routingKeys)
       }
-      inviteId.isnull() => res |
-        res.put("~thread",{"pthid":inviteId,"thid":res{"@id"}})
+      res2 = inviteId.isnull()
+        => res
+         | res.put("~thread",{"pthid":inviteId,"thid":res{"@id"}})
+      wrangler:installedRIDs() >< "io.picolabs.aca.edge"
+        => res2.put("~transport",{"return_route":"all"})
+         | res2
     }
     tags = ["Aries","agent","connections"]
     the_tags = tags.map(lc).sort().join(",")
