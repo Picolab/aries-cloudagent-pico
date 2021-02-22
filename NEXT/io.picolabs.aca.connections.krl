@@ -56,16 +56,18 @@ ruleset io.picolabs.aca.connections {
       }
     }
     connReqMap = function(label, my_did, my_vk, endpoint, routingKeys, inviteId){
+      isEdge = wrangler:installedRIDs() >< "io.picolabs.aca.edge"
+      effectiveEP = isEdge => "" | endpoint
       res = {
         "@type": aca:prefix() + "connections/1.0/request",
         "@id": random:uuid(),
         "label": label,
-        "connection": connMap(my_did, my_vk, endpoint, routingKeys)
+        "connection": connMap(my_did, my_vk, effectiveEP, routingKeys)
       }
       res2 = inviteId.isnull()
         => res
          | res.put("~thread",{"pthid":inviteId,"thid":res{"@id"}})
-      wrangler:installedRIDs() >< "io.picolabs.aca.edge"
+      isEdge
         => res2.put("~transport",{"return_route":"all"})
          | res2
     }
