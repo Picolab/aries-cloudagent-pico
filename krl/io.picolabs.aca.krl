@@ -190,6 +190,7 @@ ruleset io.picolabs.aca {
         .collect(function(x){x[0]})
         .map(function(x){x[0][1]})
       c_i = (args{"c_i"} || args{"d_m"})
+        .replace(re#%2F#ig,"/")
         .replace(re#%2B#ig,"+")
         .replace(re#%3D#ig,"=")
       oobm = math:base64decode(c_i).decode()
