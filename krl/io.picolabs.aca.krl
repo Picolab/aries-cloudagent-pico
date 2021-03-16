@@ -208,7 +208,7 @@ ruleset io.picolabs.aca {
 //    where uri.length() <= 240 && event:attr("protected").isnull()
       where event:attr("protected").isnull()
         && event:attr("uri")
-        && event:attr("uri").length <= 240
+        && event:attr("uri").length() <= 240
     pre {
       url = event:attr("uri")
       url_length = url.length().klog("url length")
