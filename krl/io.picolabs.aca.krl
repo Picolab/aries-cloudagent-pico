@@ -182,6 +182,7 @@ ruleset io.picolabs.aca {
   rule route_outofband_message {
     select when didcomm message
       uri re#(http.+[?].*((c_i=)|(d_m=)).+)# setting(uri)
+      where uri.length() > 240
     pre {
       qs = uri.split("?").tail().join("?")
       args = qs.split("&")
@@ -199,6 +200,26 @@ ruleset io.picolabs.aca {
     fired {
       raise event "didcomm_"+eventSpec attributes {"message":oobm}
            .put("prefix",prefixFromType(oobm{"@type"})) // for 2m
+    }
+  }
+  rule redirection_to_real_oob {
+    select when didcomm message
+//    uri re#^http# setting(uri)
+//    where uri.length() <= 240 && event:attr("protected").isnull()
+      where event:attr("protected").isnull()
+        && event:attr("uri")
+        && event:attr("uri").length <= 240
+    pre {
+      url = event:attr("uri")
+      url_length = url.length().klog("url length")
+      proceed = url_length <= 240 && event:attr("protected").isnull()
+      res = proceed => http:get(url,dontFollowRedirect=true) | null
+      ok = res => res{"status_code"}.match(re#30[1-2]#) | null
+      location = ok => res{["headers","location"]} | null
+    }
+    if location && location.length() > 240 then noop()
+    fired {
+      raise didcomm event "message" attributes {"uri":location}
     }
   }
 //
