@@ -109,6 +109,12 @@ ruleset io.picolabs.aca {
       | prefix == "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/" => eventSpec
       | null
     }
+    prefixFromType = function(type){ // for 2m
+      mturiRE = re#(.*/)([a-z0-9._-]+)/1\.\d+/([a-z0-9._-]+)$#
+      parts = type.extract(mturiRE)
+      prefix = parts.head()
+      prefix
+    }
     prefix = function(){
       "https://didcomm.org/"
     }
@@ -167,6 +173,7 @@ ruleset io.picolabs.aca {
     fired {
       raise event "didcomm_"+eventSpec attributes
         all.put("message",msg)
+           .put("prefix",prefixFromType(msg{"@type"})) // for 2m
     }
   }
 //
@@ -181,7 +188,9 @@ ruleset io.picolabs.aca {
         .map(function(x){x.split("=")})
         .collect(function(x){x[0]})
         .map(function(x){x[0][1]})
-      c_i = args{"c_i"} || args{"d_m"}
+      c_i = (args{"c_i"} || args{"d_m"})
+        .replace(re#%2B#ig,"+")
+        .replace(re#%3D#ig,"=")
       oobm = math:base64decode(c_i).decode()
       eventSpec = eventFromType(oobm{"@type"})
     }
@@ -189,6 +198,7 @@ ruleset io.picolabs.aca {
       send_directive("OOB message routed",{"eventSpec":eventSpec})
     fired {
       raise event "didcomm_"+eventSpec attributes {"message":oobm}
+           .put("prefix",prefixFromType(oobm{"@type"})) // for 2m
     }
   }
 //
