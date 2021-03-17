@@ -56,6 +56,7 @@ ruleset io.picolabs.aca.basicmessage {
       conn = aca:connections(their_vk)
       content = event:attr("content").decode()
       bm = basicMsgMap(content)
+        .aca:adjustType2m() // for 2m
       pm = aca:packMsg(their_vk,bm,conn{"my_did"})
       se = conn{"their_endpoint"}
       wmsg = ent:basicmessages{their_vk}.defaultsTo([])

@@ -81,6 +81,7 @@ ruleset io.picolabs.aca.connections {
         uKR{["sovrin","indyPublic"]},
         aca:localServiceEndpoint(eci)
       )
+        .aca:adjustType2m()
       <<#{meta:host}/sky/cloud/#{eci}/#{meta:rid}/html.html>>
         + "?c_i=" + math:base64encode(im.encode())
     }
@@ -132,6 +133,7 @@ ruleset io.picolabs.aca.connections {
       rks = ri => ri{"their_routing"} | null
       endpoint = ri => ri{"endpoint"} | aca:localServiceEndpoint(my_did)
       rm = connResMap(req_id, my_did, my_vk, endpoint,rks)
+	.aca:adjustType2m(event:attrs{"prefix"})
       c = {
         "created": time:now(),
         "label": msg{"label"},
@@ -181,6 +183,7 @@ ruleset io.picolabs.aca.connections {
       rks = ri => ri{"their_routing"} | null
       endpoint = ri => ri{"endpoint"} | aca:localServiceEndpoint(my_did)
       rm = connReqMap(aca:label(),my_did,my_vk,endpoint,rks,im{"@id"})
+        .aca:adjustType2m() // for 2m
         .klog("connections request")
       reqURL = im{"serviceEndpoint"}
       pc = {

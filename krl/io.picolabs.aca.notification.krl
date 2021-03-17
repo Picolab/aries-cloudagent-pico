@@ -40,6 +40,7 @@ ruleset io.picolabs.aca.notification {
     pre {
       their_key = event:attr("their_vk")
       am = ackMap(event:attr("thid"),event:attr("status") || "OK")
+        .aca:adjustType2m() // for 2m
       conn = aca:connections(){their_key}
       pm = aca:packMsg(their_vk,am,conn{"my_did"})
       se = conn{"their_endpoint"}

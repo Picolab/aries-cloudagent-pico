@@ -47,6 +47,7 @@ ruleset io.picolabs.aca.trust_ping {
     pre {
       msg = event:attr("message")
       rm = trustPingResMap(msg{"@id"})
+        .aca:adjustType2m(event:attrs{"prefix"}) // for 2m
       their_vk = event:attr("sender_key")
       conn = aca:connections(their_vk)
       pm = aca:packMsg(their_vk,rm,conn{"my_did"})
@@ -79,6 +80,7 @@ ruleset io.picolabs.aca.trust_ping {
       their_vk = event:attr("their_vk")
       conn = aca:connections(their_vk)
       rm = trustPingMap()
+        .aca:adjustType2m() // for 2m
       pm = aca:packMsg(their_vk,rm,conn{"my_did"})
       se = conn{"their_endpoint"}
     }

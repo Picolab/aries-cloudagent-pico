@@ -34,6 +34,7 @@ ruleset io.picolabs.aca {
     use module io.picolabs.wrangler alias wrangler
     provides packMsg, signField, verifySignatures,
       localServiceEndpoint, prefix, label, connections
+      , adjustType2m // for 2m
     shares __testing, prefix
   }
   global {
@@ -114,6 +115,17 @@ ruleset io.picolabs.aca {
       parts = type.extract(mturiRE)
       prefix = parts.head()
       prefix
+    }
+    adjustType2m = function(a_map,incoming_prefix){ // for 2m
+      p = prefix()
+      p_re = ("^"+p).as("RegExp")
+      old_prefix = incoming_prefix || "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/"
+      adjustPrefix = function(v,k){
+        k == "@type" => v.replace(p_re,old_prefix) | v 
+      }
+      old_prefix != p && a_map{"@type"}.match(p_re)
+        => a_map.map(adjustPrefix)
+         | a_map
     }
     prefix = function(){
       "https://didcomm.org/"

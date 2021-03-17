@@ -68,7 +68,9 @@ ruleset io.picolabs.aca.discover-features {
       query = msg{"query"}
       ok = query.acceptable_query()
       answerArray = ok => buildAnswer(query) | null
-      dm = ok => disclosureMap(msg{"@id"},answerArray) | null
+      dm = ok => disclosureMap(msg{"@id"},answerArray)
+                   .aca:adjustType2m() // for 2m
+               | null
       pm = dm => aca:packMsg(their_vk,rm,conn{"my_did"}) | null
     }
     if pm then noop()
