@@ -15,6 +15,7 @@ ruleset io.picolabs.aca {
           At Step 2 accepting both and generating only the new
             old did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/
             new https://didcomm.org/
+          Execpt that it MAY use the old when dealing with older agents
         Aries RFC 0046: Mediators and Relays
           Implements routing of packed message in function `packMsg`
         Aries RFC 0434: Out of Band Protocol 1.0
