@@ -234,6 +234,7 @@ ruleset io.picolabs.aca.connections {
     }
     if typeof(index) == "Number" && index >= 0 then noop()
     fired {
+      raise aca_trust_ping event "new_ping"
       raise aca event "new_connection" attributes c
       ent:pending_conn := ent:pending_conn.splice(index,1)
     }
