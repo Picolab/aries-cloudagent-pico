@@ -37,7 +37,7 @@ ruleset s {
       send_directive("shortcut registered",{
         "tag":tag,
         "eci":channel{"id"},
-        "shortcut":<<#{meta:host}/sky/event/channel{"id"}/#{eid}/s/u>>,
+        "shortcut":<<#{meta:host}/sky/event/#{channel{"id"}}/#{eid}/s/u>>,
         "url":url
       })
     }
