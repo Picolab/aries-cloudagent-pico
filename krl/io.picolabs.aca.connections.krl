@@ -249,7 +249,7 @@ ruleset io.picolabs.aca.connections {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
     if ent:invitation.isnull() then noop()
     fired {
-      ent:invitation = make_invitation()
+      ent:invitation := make_invitation()
     }
   }
 }
