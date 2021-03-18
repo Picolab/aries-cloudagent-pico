@@ -72,7 +72,7 @@ ruleset io.picolabs.aca.connections {
       inviteId.isnull() => res |
         res.put("~thread",{"pthid":inviteId,"thid":res{"@id"}})
     }
-    invitation = function(label){
+    make_invitation = function(label){
       uKR = wrangler:channel("agent")
       eci = uKR{"id"}
       im = connInviteMap(
@@ -84,6 +84,9 @@ ruleset io.picolabs.aca.connections {
         .aca:adjustType2m()
       <<#{meta:host}/sky/cloud/#{eci}/#{meta:rid}/html.html>>
         + "?c_i=" + math:base64encode(im.encode())
+    }
+    invitation = function(){
+      ent:invitation
     }
     html = function(c_i){
       invite:html(c_i)
@@ -237,6 +240,16 @@ ruleset io.picolabs.aca.connections {
       raise aca event "new_connection" attributes c
       raise aca_trust_ping event "new_ping" attributes {"their_vk":their_vk}
       ent:pending_conn := ent:pending_conn.splice(index,1)
+    }
+  }
+//
+// housekeeping
+//
+  rule initialization {
+    select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
+    if ent:invitation.isnull() then noop()
+    fired {
+      ent:invitation = make_invitation()
     }
   }
 }
