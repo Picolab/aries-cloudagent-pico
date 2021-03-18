@@ -43,11 +43,17 @@ ruleset s {
     }
     fired {
       ent:s{channel{"id"}} := url
-      last
+      raise shortcut event "registered" attributes {
+        "tag":tag,
+        "eci":channel{"id"},
+        "shortcut":<<#{meta:host}/sky/event/#{channel{"id"}}/#{eid}/s/u>>,
+        "url":url
+      }
     }
   }
   rule redirectShortcut {
     select when s u
+      where event:attr("url").isnull()
     send_directive("_redirect",{"url":ent:s{meta:eci}})
   }
 }
