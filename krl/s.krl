@@ -42,11 +42,12 @@ ruleset s {
       })
     }
     fired {
-      ent:s{channel{"id"}} := url
+      shortcut = <<#{meta:host}/sky/event/#{channel{"id"}}/#{eid}/s/u>>
+      ent:s{channel{"id"}} := url + "&orig=" + shortcut
       raise shortcut event "registered" attributes {
         "tag":tag,
         "eci":channel{"id"},
-        "shortcut":<<#{meta:host}/sky/event/#{channel{"id"}}/#{eid}/s/u>>,
+        "shortcut":shortcut,
         "url":url
       }
     }

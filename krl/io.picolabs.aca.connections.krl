@@ -14,7 +14,7 @@ ruleset io.picolabs.aca.connections {
   global {
     __testing = { "queries":
       [ { "name": "__testing" }
-      , { "name": "invitation", "args": [ "label" ] }
+      , { "name": "invitation" }
       ] , "events":
       [ //{ "domain": "d1", "type": "t1" }
       //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
@@ -88,8 +88,8 @@ ruleset io.picolabs.aca.connections {
     invitation = function(){
       ent:invitation
     }
-    html = function(c_i){
-      invite:html(c_i)
+    html = function(c_i,orig){
+      invite:html(c_i,orig)
     }
   }
 //
@@ -250,6 +250,14 @@ ruleset io.picolabs.aca.connections {
     if ent:invitation.isnull() then noop()
     fired {
       ent:invitation := make_invitation()
+      raise s event "u" attributes {"url": ent:invitation, "tag": aca:label()}
+    }
+  }
+  rule recordShortcut {
+    select when shortcut registered
+    if not ent:invitation.match(re#&orig=#) then noop()
+    fired {
+      ent:invitation := ent:invitation + "&orig=" + event:attr("shortcut")
     }
   }
 }
