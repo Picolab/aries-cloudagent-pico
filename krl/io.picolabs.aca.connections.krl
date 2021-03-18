@@ -246,7 +246,7 @@ ruleset io.picolabs.aca.connections {
 // housekeeping
 //
   rule initialization {
-    select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
+    select when wrangler ruleset_added where event:attr("rids") >< meta:rid
     if ent:invitation.isnull() then noop()
     fired {
       ent:invitation := make_invitation()
