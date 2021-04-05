@@ -86,7 +86,7 @@ ruleset io.picolabs.aca.connections {
         + "?c_i=" + math:base64encode(im.encode())
     }
     invitation = function(){
-      ent:invitation
+      ent:invitation || make_invitation()
     }
     html = function(c_i,orig){
       invite:html(c_i,orig)
