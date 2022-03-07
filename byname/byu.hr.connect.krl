@@ -7,12 +7,14 @@ ruleset byu.hr.connect {
     shares connect
   }
   global {
-    displayName = function(s){
+    displayNameLI = function(s){
       eci = s{"Tx"}
       thisPico = ctx:channels.any(function(c){c{"id"}==eci})
-      eci.isnull() => "unknown"  |
-      thisPico     => "yourself" |
-                      wrangler:picoQuery(eci,"byu.hr.core","displayName")
+      n = eci.isnull() => "unknown"  |
+          thisPico     => "yourself" |
+                          wrangler:picoQuery(eci,"byu.hr.core","displayName")
+      <<<li>#{n}</li>
+>>
     }
     logout = function(_headers){
       ctx:query(
@@ -30,7 +32,7 @@ ruleset byu.hr.connect {
 <h2>You have relationships with:</h2>
 <ul>
 >>
-      + subs:established().map(displayName)
+      + subs:established().map(displayNameLI)
       + <<</ul>
 >>
       + html:footer()
