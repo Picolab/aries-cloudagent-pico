@@ -32,7 +32,7 @@ ruleset byu.hr.connect {
 <h2>You have relationships with:</h2>
 <ul>
 >>
-      + subs:established().map(displayNameLI)
+      + subs:established().map(displayNameLI).join("")
       + <<</ul>
 >>
       + html:footer()
