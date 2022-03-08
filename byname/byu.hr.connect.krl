@@ -16,16 +16,8 @@ ruleset byu.hr.connect {
       <<<li>#{n} (#{s{"Tx_role"}} to your #{s{"Rx_role"}})</li>
 >>
     }
-    logout = function(_headers){
-      ctx:query(
-        wrangler:parent_eci(),
-        "byu.hr.oit",
-        "logout",
-        {"_headers":_headers}
-      )
-    }
     connect = function(_headers){
-      url = logout(_headers).extract(re#location='([^']*)'#).head()
+      url = meta:host.extract(re#(.+):\d+#).head()
       html:header("manage connections","",url,null,_headers)
       + <<
 <h1>Manage connections</h1>
