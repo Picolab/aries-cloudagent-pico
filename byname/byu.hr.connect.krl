@@ -13,7 +13,7 @@ ruleset byu.hr.connect {
       n = eci.isnull() => "unknown"  |
           thisPico     => "yourself" |
                           wrangler:picoQuery(eci,"byu.hr.core","displayName")
-      <<<li>#{n}</li>
+      <<<li>#{n} (#{s{"Tx_role"}} to your #{s{"Rx_role"}})</li>
 >>
     }
     logout = function(_headers){
