@@ -17,8 +17,7 @@ ruleset byu.hr.connect {
 >>
     }
     connect = function(_headers){
-      url = meta:host.extract(re#(.+):\d+#).head()
-      html:header("manage connections","",url,null,_headers)
+      html:header("manage connections","",null,null,_headers)
       + <<
 <h1>Manage connections</h1>
 <h2>You have relationships with:</h2>
