@@ -47,4 +47,16 @@ ruleset byu.hr.connect {
     foreach wrangler:channels("connections").reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
   }
+  rule linkToAries {
+    select when byu_hr_connect factory_reset
+    pre {
+      myURI = meta:rulesetURI
+      installerURI = myURI.replace("byname","NEXT")
+                          .replace(meta:rid,"io.picolabs.aca.installer")
+    }
+    fired {
+      raise wrangler event "install_ruleset_request"
+        attributes {"url":installerURI}
+    }
+  }
 }
