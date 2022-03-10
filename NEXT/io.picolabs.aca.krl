@@ -31,7 +31,7 @@ ruleset io.picolabs.aca {
           Available thru provided function `connections`
           Updatable thru events `aca:new_connection`, `aca:deleted_connection`
     >>
-    configure using host = "http://localhost:3000"
+    configure using host = meta:host
     use module io.picolabs.wrangler alias wrangler
     use module io.picolabs.did alias did
     provides packMsg, signField, verifySignatures,

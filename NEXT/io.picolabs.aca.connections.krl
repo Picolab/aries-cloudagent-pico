@@ -77,7 +77,7 @@ ruleset io.picolabs.aca.connections {
       c["tags"].sort().join(",") == the_tags
     }
     invitation = function(label){
-      host = "http://localhost:3000"
+      host = meta:host
       uKR = wrangler:channels().filter(connectionsChannel).head().klog("uKR")
       eci = uKR{"id"}
       im = connInviteMap(
