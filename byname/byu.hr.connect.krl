@@ -21,6 +21,7 @@ ruleset byu.hr.connect {
     }
     connect = function(_headers){
       inviteECI = wrangler:channels("aries,agent,connections").head().get("id")
+      displayName = html:cookies(_headers).get("displayname")
       html:header("manage connections","",null,null,_headers)
       + <<
 <h1>Manage connections</h1>
@@ -30,7 +31,7 @@ ruleset byu.hr.connect {
       + subs:established().map(displayNameLI).join("")
       + <<</ul>
 <h2>External connections</h2>
-<a href="#{meta:host}/c/#{inviteECI}/query/io.picolabs.aca.connections/invitation?label=me">my invitation</a>
+<a href="#{meta:host}/c/#{inviteECI}/query/io.picolabs.aca.connections/invitation?label=#{displayName}">my invitation</a>
 >>
       + html:footer()
     }
