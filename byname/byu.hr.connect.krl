@@ -7,6 +7,9 @@ ruleset byu.hr.connect {
     shares connect
   }
   global {
+    installerRID = "io.picolabs.aca.installer"
+    installerURI = meta:rulesetURI.replace("byname","NEXT")
+                                  .replace(meta:rid,installerRID)
     displayNameLI = function(s){
       eci = s{"Tx"}
       thisPico = ctx:channels.any(function(c){c{"id"}==eci})
@@ -49,14 +52,20 @@ ruleset byu.hr.connect {
   }
   rule linkToAries {
     select when byu_hr_connect factory_reset
-    pre {
-      myURI = meta:rulesetURI
-      installerURI = myURI.replace("byname","NEXT")
-                          .replace(meta:rid,"io.picolabs.aca.installer")
-    }
     fired {
       raise wrangler event "install_ruleset_request"
         attributes {"url":installerURI}
+    }
+  }
+  rule installAriesAgentRulesets {
+    select when wrangler ruleset_installed where
+      event:attr("rids") >< installerRID
+    fired {
+      raise aca_installer event "install_request" attributes {
+        "connections":"yes",
+        "basicmessage":"yes",
+        "trust_ping":"yes",
+      }
     }
   }
 }
