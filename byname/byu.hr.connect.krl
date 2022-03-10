@@ -28,6 +28,8 @@ ruleset byu.hr.connect {
 >>
       + subs:established().map(displayNameLI).join("")
       + <<</ul>
+<h2>External connections</h2>
+<a href="#{meta:host}/c/#{meta:eci}/query/io.picolabs.aca.connections/invitation?label=me">my invitation</a>
 >>
       + html:footer()
     }
