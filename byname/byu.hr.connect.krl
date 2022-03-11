@@ -52,7 +52,6 @@ able => "" | << disabled title="#{n} needs this app">>
     external = function(_headers){
       inviteECI = wrangler:channels("aries,agent,connections").head().get("id")
       acceptECI = wrangler:channels("aries,agent").head().get("id")
-      displayName = html:cookies(_headers).get("displayname")
       html:header("manage connections","",null,null,_headers)
       + <<
 <h1>Make new external connection</h1>
@@ -60,7 +59,7 @@ able => "" | << disabled title="#{n} needs this app">>
 <h2>Generate invitation:</h2>
 <form method="GET" action="#{meta:host}/c/#{inviteECI}/query/io.picolabs.aca.connections/invitation.txt">
 Label for invitation:
-<input name="label" value="#{displayName}">
+<input name="label" value="#{ent:agentLabel}">
 <button type="submit">Invitation to copy</button>
 </form>
 <h2>Accept invitation:</h2>
@@ -75,6 +74,10 @@ Invitation you received:
   }
   rule initialize {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
+    pre {
+      the_cookies = html:cookies(event:attr("_headers"))
+      displayName = the_cookies.get("displayname") || wrangler:name()
+    }
     every {
       wrangler:createChannel(
         ["connections"],
@@ -83,6 +86,8 @@ Invitation you received:
       )
     }
     fired {
+      ent:displayName := displayName
+      ent:agentLabel := displayName + " at byname.byu.edu"
       raise byu_hr_connect event "factory_reset"
     }
   }
@@ -107,6 +112,12 @@ Invitation you received:
         "basicmessage":"yes",
         "trust_ping":"yes",
       }
+    }
+  }
+  rule setAgentLabel {
+    select when aca_installer cleanup
+    fired {
+      raise aca event "new_label" attributes {"label":ent:agentLabel}
     }
   }
 }
