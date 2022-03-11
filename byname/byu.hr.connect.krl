@@ -11,6 +11,10 @@ ruleset byu.hr.connect {
     installerURI = meta:rulesetURI.replace("byname","NEXT")
                                   .replace(meta:rid,installerRID)
     displayNameLI = function(s){
+      linkToConnect = function(able){
+        able => <<<a href="#" onclick="return false">make connection</a>
+>> | <<#{n} needs this app>>
+      }
       eci = s{"Tx"}
       thisPico = ctx:channels.any(function(c){c{"id"}==eci})
       n = eci.isnull() => "unknown"  |
@@ -21,7 +25,7 @@ ruleset byu.hr.connect {
       able = theirRIDs >< meta:rid
       <<<li>
 #{n} (#{s{"Tx_role"}} to your #{s{"Rx_role"}})
-#{able => <<<a href="#" onclick="return false">make connection</a> >> | ""}
+#{linkToConnect(able)}
 </li>
 >>
     }
