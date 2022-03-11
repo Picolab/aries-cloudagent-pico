@@ -16,7 +16,13 @@ ruleset byu.hr.connect {
       n = eci.isnull() => "unknown"  |
           thisPico     => "yourself" |
                           wrangler:picoQuery(eci,"byu.hr.core","displayName")
-      <<<li>#{n} (#{s{"Tx_role"}} to your #{s{"Rx_role"}})</li>
+      theirRIDs = eci.isnull() || thisPico => [] |
+        wrangler:picoQuery(eci,"io.picolabs.wrangler","installedRIDs")
+      able = theirRIDs >< meta:rid
+      <<<li>
+#{n} (#{s{"Tx_role"}} to your #{s{"Rx_role"}})
+#{able => <<<a href="#" onclick="return false">make connection</a> >> | ""}
+</li>
 >>
     }
     connect = function(_headers){
