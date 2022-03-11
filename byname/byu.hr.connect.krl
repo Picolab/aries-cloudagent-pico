@@ -51,6 +51,7 @@ able => "" | << disabled title="#{n} needs this app">>
     }
     external = function(_headers){
       inviteECI = wrangler:channels("aries,agent,connections").head().get("id")
+      acceptECI = wrangler:channels("aries,agent").head().get("id")
       displayName = html:cookies(_headers).get("displayname")
       html:header("manage connections","",null,null,_headers)
       + <<
@@ -63,7 +64,7 @@ Label for invitation:
 <button type="submit">my invitation</button>
 </form>
 <h2>Accept invitation:</h2>
-<form>
+<form method="GET" action="#{meta:host}/c/#{acceptECI}/event/none/didcomm/message">
 Invitation you received:
 <input name="uri">
 <button type="submit">Accept invitation</button>
