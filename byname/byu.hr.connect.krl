@@ -11,21 +11,23 @@ ruleset byu.hr.connect {
     installerURI = meta:rulesetURI.replace("byname","NEXT")
                                   .replace(meta:rid,installerRID)
     displayNameLI = function(s){
-      linkToConnect = function(able){
-        able => <<<a href="#" onclick="return false">make connection</a>
->> | <<#{n} needs this app>>
+      linkToConnect = function(){
+        theirRIDs = eci.isnull() || thisPico => [] |
+          wrangler:picoQuery(eci,"io.picolabs.wrangler","installedRIDs")
+        able = theirRIDs >< meta:rid
+        <<<a href="#" onclick="return false"#{
+able => "" | << disabled title="#{n} needs this app">>
+}>make connection</a>
+>>
       }
       eci = s{"Tx"}
       thisPico = ctx:channels.any(function(c){c{"id"}==eci})
       n = eci.isnull() => "unknown"  |
           thisPico     => "yourself" |
                           wrangler:picoQuery(eci,"byu.hr.core","displayName")
-      theirRIDs = eci.isnull() || thisPico => [] |
-        wrangler:picoQuery(eci,"io.picolabs.wrangler","installedRIDs")
-      able = theirRIDs >< meta:rid
       <<<li>
 #{n} (#{s{"Tx_role"}} to your #{s{"Rx_role"}})
-#{linkToConnect(able)}
+#{linkToConnect()}
 </li>
 >>
     }
