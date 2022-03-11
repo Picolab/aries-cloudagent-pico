@@ -1,7 +1,7 @@
 # App for the byname application
 
 Participants in the [byname](https://github.com/Picolab/fully-sharded-database) application can "Manage apps"
-(once they have had the `byu.hr.manage_apps` installed in their pico)
+(once they have had the `byu.hr.manage_apps` ruleset installed in their pico (by a byname admin))
 and here is the source code for an app which they can add
 (from this [Ruleset URI](https://raw.githubusercontent.com/Picolab/aries-cloudagent-pico/master/byname/byu.hr.connect.krl)).
 
