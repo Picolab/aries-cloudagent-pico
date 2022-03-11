@@ -25,6 +25,7 @@ ruleset byu.hr.connect {
       html:header("manage connections","",null,null,_headers)
       + <<
 <h1>Manage connections</h1>
+<h2><img src="https://manifold.picolabs.io/static/media/Aries.ffeeb7fd.png" alt="Aries logo"> This is your Aries agent and cloud wallet</h2>
 <h2>You have relationships with:</h2>
 <ul>
 >>
