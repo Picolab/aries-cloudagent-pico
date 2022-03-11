@@ -26,8 +26,11 @@ able => "" | << disabled title="#{n} needs this app">>
           thisPico     => "yourself" |
                           wrangler:picoQuery(eci,"byu.hr.core","displayName")
       <<<li>
+<form>
+<input type="hidden" name="label" value="#{s{"Id"}}">
 #{n} (#{s{"Tx_role"}} to your #{s{"Rx_role"}})
 #{linkToConnect()}
+</form>
 </li>
 >>
     }
