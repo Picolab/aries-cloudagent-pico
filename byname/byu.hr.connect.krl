@@ -57,7 +57,7 @@ able => "" | << disabled title="#{n} needs this app">>
 <h1>Make new external connection</h1>
 <h2><img src="https://manifold.picolabs.io/static/media/Aries.ffeeb7fd.png" alt="Aries logo" style="height:30px"> This is your Aries agent and cloud wallet</h2>
 <h2>Generate invitation:</h2>
-<form method="GET" action="#{meta:host}/c/#{inviteECI}/query/io.picolabs.aca.connections/invitation">
+<form method="GET" action="#{meta:host}/c/#{inviteECI}/query/io.picolabs.aca.connections/invitation.txt">
 Label for invitation:
 <input name="label" value="#{displayName}">
 <button type="submit">my invitation</button>
