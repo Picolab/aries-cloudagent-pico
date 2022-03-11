@@ -4,7 +4,7 @@ ruleset byu.hr.connect {
     use module io.picolabs.subscription alias subs
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
-    shares connect
+    shares connect, external
   }
   global {
     installerRID = "io.picolabs.aca.installer"
@@ -35,8 +35,6 @@ able => "" | << disabled title="#{n} needs this app">>
 >>
     }
     connect = function(_headers){
-      inviteECI = wrangler:channels("aries,agent,connections").head().get("id")
-      displayName = html:cookies(_headers).get("displayname")
       html:header("manage connections","",null,null,_headers)
       + <<
 <h1>Manage connections</h1>
@@ -47,7 +45,20 @@ able => "" | << disabled title="#{n} needs this app">>
       + subs:established().map(displayNameLI).join("")
       + <<</ul>
 <h2>External connections</h2>
+<a href="#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/external">make new external connection</a>
+>>
+      + html:footer()
+    }
+    external = function(_headers){
+      inviteECI = wrangler:channels("aries,agent,connections").head().get("id")
+      displayName = html:cookies(_headers).get("displayname")
+      html:header("manage connections","",null,null,_headers)
+      + <<
+<h1>Make new external connection</h1>
+<h2><img src="https://manifold.picolabs.io/static/media/Aries.ffeeb7fd.png" alt="Aries logo" style="height:30px"> This is your Aries agent and cloud wallet</h2>
+<h2>Generate invitation:</h2>
 <a href="#{meta:host}/c/#{inviteECI}/query/io.picolabs.aca.connections/invitation?label=#{displayName}">my invitation</a>
+<h2>Accept invitation:</h2>
 >>
       + html:footer()
     }
