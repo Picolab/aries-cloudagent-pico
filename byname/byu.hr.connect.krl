@@ -64,7 +64,7 @@ Label for invitation:
 <button type="submit">Invitation to copy</button>
 </form>
 <h2>Accept invitation:</h2>
-<form method="GET" action="#{meta:host}/c/#{acceptECI}/event/none/didcomm/message">
+<form method="POST" action="#{meta:host}/sky/event/#{acceptECI}/none/didcomm/message">
 Invitation you received:
 <input name="uri">
 <button type="submit">Accept invitation</button>
