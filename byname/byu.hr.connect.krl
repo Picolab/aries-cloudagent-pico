@@ -45,7 +45,7 @@ able => "" | << disabled title="#{n} needs this app">>
       + subs:established().map(displayNameLI).join("")
       + <<</ul>
 <h2>External connections</h2>
-<a href="#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/external">make new external connection</a>
+<a href="#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/external.html">make new external connection</a>
 >>
       + html:footer()
     }
