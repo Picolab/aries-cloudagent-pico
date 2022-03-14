@@ -155,4 +155,14 @@ Invitation you received:
       raise aca event "new_label" attributes {"label":ent:agentLabel}
     }
   }
+  rule cacheDeletedConnection {
+    select when aca deleted_connection their_vk re#(.+)# setting(their_vk)
+           then aca connections_changed
+    pre {
+      tolog = their_vk.klog("vk to delete")
+    }
+    fired {
+      clear ent:connectionsCache{their_vk}
+    }
+  }
 }
