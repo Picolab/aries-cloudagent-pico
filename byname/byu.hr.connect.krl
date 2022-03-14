@@ -51,8 +51,8 @@ able => "" | << disabled title="#{n} needs this app">>
 <h2>External connections</h2>
 <a href="#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/external.html">make new external connection</a>
 >>
-      + <<<ul id="extConns">
-#{ent:connectionsCache.map(cachedConnectionsLI).join("")}</ul>
+      + <<<ul>
+#{ent:connectionsCache.values().map(cachedConnectionsLI).join("")}</ul>
 >>
       + html:footer()
     }
