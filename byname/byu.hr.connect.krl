@@ -34,37 +34,12 @@ able => "" | << disabled title="#{n} needs this app">>
 </li>
 >>
     }
-    gC = function(){
-      acaECI = wrangler:channels("aries,agent").head().get("id")
-      <<<script type="text/javascript">
-var getConnections = function(){
-  var xhr = new XMLHttpRequest;
-  var url = '#{meta:host}/c/#{acaECI}/query/io.picolabs.aca/connections';
-  xhr.onload = function(){
-    function appendLI(conn){
-      var ul = document.getElementById("extConns");
-      var li = document.createElement("li");
-      li.appendChild(document.createTextNode(conn.label));
-      ul.appendChild(li);
-    }
-    var data = xhr.response;
-    var pdata = JSON.parse(data);
-    for(var i=0; i<=pdata.length-1; ++i){
-      var c = pdata[i];
-      alert(Object.keys(c));
-for(var key in c){console.log(key,c[key])}
-      appendLI(c.label);
-    }
-  }
-  xhr.onerror = function(){alert(xhr.responseText);}
-  xhr.open("GET",url,true);
-  xhr.send();
-}
-</script>
+    cachedConnectionsLI = function(c){
+      <<<li>c.get("label")</li>
 >>
     }
     connect = function(_headers){
-      html:header("manage connections",gC(),null,null,_headers)
+      html:header("manage connections","",null,null,_headers)
       + <<
 <h1>Manage connections</h1>
 <h2><img src="https://manifold.picolabs.io/static/media/Aries.ffeeb7fd.png" alt="Aries logo" style="height:30px"> This is your Aries agent and cloud wallet</h2>
@@ -77,10 +52,7 @@ for(var key in c){console.log(key,c[key])}
 <a href="#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/external.html">make new external connection</a>
 >>
       + <<<ul id="extConns">
-</ul>
-<script type="text/javascript">
-getConnections();
-</script>
+#{ent:connectionsCache.map(cachedConnectionsLI).join("")}</ul>
 >>
       + html:footer()
     }
