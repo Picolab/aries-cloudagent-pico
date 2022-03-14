@@ -50,8 +50,11 @@ var getConnections = function(){
     var data = xhr.response;
     alert(data.length);
     alert(data);
-    for(var i=0; i<=data.length-1; ++i){
-      var c = data[i];
+    var pdata = JSON.parse(data);
+    alert(pdata.length);
+    alert(pdata);
+    for(var i=0; i<=pdata.length-1; ++i){
+      var c = pdata[i];
       alert(c);
       appendLI(c.label);
     }
