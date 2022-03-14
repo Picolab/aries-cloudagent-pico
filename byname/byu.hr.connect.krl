@@ -98,8 +98,9 @@ Invitation you received:
   padding: 10px;
   border: 1px solid black;
   border-radius: 15px;
-  max-width: 60%;
+  max-width: 80%;
   clear: both;
+  overflow-x: scroll;
 }
 #messaging .incoming {
   border-bottom-left-radius: 0;
@@ -111,6 +112,7 @@ Invitation you received:
 #send_message {
   clear: both;
   float: right;
+  margin: 5px 0 0 0;
 }
 </style>
 >>
