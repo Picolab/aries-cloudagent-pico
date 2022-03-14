@@ -85,16 +85,16 @@ Invitation you received:
       + html:footer()
     }
     one = function(vk,_headers){
-      prettyPrint = function(a,v,k){
-        a + <<  #{k}: #{v},
+      prettyPrint = function(v,k){
+        <<  "#{k}": #{v.encode()},
 >>
       }
       c = ent:connectionsCache{vk}
       label = c{"label"}
       html:header("Your connection to "+label,"",null,null,_headers)
       + <<<h1>Your connection to #{label}</h1>
-<pre>#{c.values().reduce(prettyPrint,<<{
->>).join("")+"}"}</pre>
+<pre>{
+#{c.map(prettyPrint).values().join("")}}</pre>
 >>
       + html:footer()
     }
