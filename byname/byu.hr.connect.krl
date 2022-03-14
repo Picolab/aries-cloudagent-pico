@@ -153,6 +153,29 @@ Invitation you received:
     select when aca_installer cleanup
     fired {
       raise aca event "new_label" attributes {"label":ent:agentLabel}
+      ent:connectionsCache := {}
+    }
+  }
+  rule cacheNewConnection {
+    select when aca new_connection
+                  label re#(.+)#
+                  my_did re#(.+)#
+                  their_vk re#(.+)#
+                  their_did re#(.+)#
+                  their_endpoint re#(.+)#
+                  setting(label,my_did,their_vk,their_did,their_endpoint)
+           then aca connections_changed
+    pre {
+      new_connection = {
+        "label":label,
+        "my_did":my_did,
+        "their_vk":their_vk,
+        "their_did":their_did,
+        "their_endpoint":their_endpoint
+      }
+    }
+    fired {
+      ent:connectionsCache{their_vk} := new_connection
     }
   }
   rule cacheDeletedConnection {
