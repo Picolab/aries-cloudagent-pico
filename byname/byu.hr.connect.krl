@@ -107,9 +107,14 @@ function playMessages(eci){
   var url = '#{meta:host}/c/'+eci+'/query/io.picolabs.aca.basicmessage/basicmessages?their_vk=#{vk}';
   var xhr = new XMLHttpRequest;
   xhr.onload = function(){
-    var data = xhr.response;
-    console.log(JSON.parse(data));
-    document.getElementById('messaging').innerHTML = data;
+    var data = JSON.parse(xhr.response);
+    var the_div = document.getElementById('messaging');
+    for(var i=0; i<data.length; ++i){
+      var p = document.createElement("p");
+      p.innerHTML = data[i][content];
+      p.classList.add(data[i][from]);
+      the_div.append(p);
+    }
   }
   xhr.onerror = function(){alert(xhr.responseText);}
   xhr.open("GET",url,true);
