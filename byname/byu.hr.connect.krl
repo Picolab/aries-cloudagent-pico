@@ -52,7 +52,9 @@ able => "" | << disabled title="#{n} needs this app">>
       + subs:established().map(displayNameLI).join("")
       + <<</ul>
 <h2>External connections</h2>
-<a href="#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/external.html">make new external connection</a>
+<form action="#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/external.html">
+<button type="submit">make new external connection</button>
+</form>
 >>
       + <<<ul>
 #{ent:connectionsCache.values().map(cachedConnectionsLI).join("")}</ul>
@@ -83,6 +85,8 @@ Invitation you received:
     }
     one = function(label,_headers){
       html:header("Your connection to "+label,"",null,null,_headers)
+      + <<<h1>Your connection to #{label}</h1>
+>>
       + html:footer()
     }
   }
