@@ -111,8 +111,8 @@ function playMessages(eci){
     var the_div = document.getElementById('messaging');
     for(var i=0; i<data.length; ++i){
       var p = document.createElement("p");
-      p.innerHTML = data[i][content];
-      p.classList.add(data[i][from]);
+      p.innerHTML = data[i]["content"];
+      p.classList.add(data[i]["from"]);
       the_div.append(p);
     }
   }
