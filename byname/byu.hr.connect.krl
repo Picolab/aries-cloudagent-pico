@@ -41,8 +41,20 @@ var getConnections = function(){
   var xhr = new XMLHttpRequest;
   var url = '#{meta:host}/c/#{acaECI}/query/io.picolabs.aca/connections';
   xhr.onload = function(){
+    function appendLI(conn){
+      var ul = document.getElementById("extConns");
+      var li = document.createElement("li");
+      li.appendChild(document.createTextNode(conn.label));
+      ul.appendChild(li);
+    }
     var data = xhr.response;
+    alert(data.length);
     alert(data);
+    for(var i=0; i<=data.length-1; ++i){
+      var c = data[i];
+      alert(c);
+      appendLI(c.label);
+    }
   }
   xhr.onerror = function(){alert(xhr.responseText);}
   xhr.open("GET",url,true);
@@ -64,7 +76,9 @@ var getConnections = function(){
 <h2>External connections</h2>
 <a href="#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/external.html">make new external connection</a>
 >>
-      + <<<script type="text/javascript">
+      + <<<ul id="extConns">
+</ul>
+<script type="text/javascript">
 getConnections();
 </script>
 >>
