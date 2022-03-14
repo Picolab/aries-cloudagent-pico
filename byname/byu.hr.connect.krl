@@ -98,15 +98,19 @@ Invitation you received:
   padding: 10px;
   border: 1px solid black;
   border-radius: 15px;
-  max-width: 40%;
+  max-width: 60%;
+  clear: both;
 }
 #messaging .incoming {
   border-bottom-left-radius: 0;
 }
 #messaging .outgoing {
   float: right;
-  clear: both;
   border-bottom-right-radius: 0;
+}
+#send_message {
+  clear: both;
+  float: right;
 }
 </style>
 >>
