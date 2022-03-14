@@ -35,7 +35,8 @@ able => "" | << disabled title="#{n} needs this app">>
 >>
     }
     cachedConnectionsLI = function(c){
-      <<<li>c.get("label")</li>
+      url = <<$#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/one.html>>
+      <<<li><a href="#{url}">#{c.get("label")}</a></li>
 >>
     }
     connect = function(_headers){
