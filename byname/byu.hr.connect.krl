@@ -52,7 +52,7 @@ var getConnections = function(){
     for(var i=0; i<=pdata.length-1; ++i){
       var c = pdata[i];
       alert(Object.keys(c));
-for(var key in c){console.log(key,obj[key])}
+for(var key in c){console.log(key,c[key])}
       appendLI(c.label);
     }
   }
