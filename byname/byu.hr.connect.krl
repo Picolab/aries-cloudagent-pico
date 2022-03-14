@@ -94,7 +94,7 @@ Invitation you received:
   padding: 10px;
 }
 #messaging p {
-  margin: 0;
+  margin: 2px 0;
   padding: 10px;
   border: 1px solid black;
   border-radius: 15px;
@@ -124,11 +124,13 @@ Invitation you received:
 <div id="messaging">
 <div id="messages">
 </div>
+<div id="send_message">
 <form action="#{meta:host}/sky/event/ckux706va00zp5qpb2dy9d9jr/none/aca_basicmessage/new_content">
 <input type="hidden" name="their_vk" value="#{vk}">
 <input name="content">
 <button type="submit">Send message</button>
 </form>
+</div>
 </div>
 <script type="text/javascript">
 function playMessages(eci){
