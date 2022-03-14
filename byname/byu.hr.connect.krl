@@ -122,6 +122,8 @@ Invitation you received:
 <pre>{
 #{c.map(prettyPrint).values().join("")}}</pre>
 <div id="messaging">
+<div id="messages">
+</div>
 <form action="#{meta:host}/sky/event/ckux706va00zp5qpb2dy9d9jr/none/aca_basicmessage/new_content">
 <input type="hidden" name="their_vk" value="#{vk}">
 <input name="content">
@@ -134,7 +136,7 @@ function playMessages(eci){
   var xhr = new XMLHttpRequest;
   xhr.onload = function(){
     var data = JSON.parse(xhr.response);
-    var the_div = document.getElementById('messaging');
+    var the_div = document.getElementById('messages');
     for(var i=0; i<data.length; ++i){
       var p = document.createElement("p");
       p.innerHTML = data[i]["content"];
