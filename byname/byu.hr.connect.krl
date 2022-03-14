@@ -36,7 +36,7 @@ able => "" | << disabled title="#{n} needs this app">>
     }
     cachedConnectionsLI = function(c){
       label = c.get("label")
-      url = <<$#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/one.html>>
+      url = <<#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/one.html>>
             + "?label=" + label
       <<<li><a href="#{url}">#{label}</a></li>
 >>
