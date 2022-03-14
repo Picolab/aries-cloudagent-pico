@@ -85,20 +85,24 @@ Invitation you received:
       + html:footer()
     }
     styles_one = <<<style type="text/css">
-#messages {
-  height: 75vp;
-  width: 30vp;
+#messaging {
+  max-height: 75vp;
+  width: 30%;
   overflow: hidden;
   overflow-y: scroll;
   background-color: white;
+  padding: 10px;
 }
-#messages .incoming {
+#messaging .incoming {
+  width: 40%;
   border: 1px solid black;
   border-radius: 15px;
   border-bottom-left-radius: 0;
 }
-#messages .outgoing {
+#messaging .outgoing {
   float: right;
+  clear: both;
+  width: 40%;
   border: 1px solid black;
   border-radius: 15px;
   border-bottom-right-radius: 0;
