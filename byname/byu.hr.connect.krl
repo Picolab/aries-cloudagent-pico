@@ -97,7 +97,7 @@ Invitation you received:
 #{c.map(prettyPrint).values().join("")}}</pre>
 <div id="messaging">
 </div>
-<form action="#{meta:host}/c/ckux706va00zp5qpb2dy9d9jr/none/aca_basicmessage/new_content">
+<form action="#{meta:host}/c/ckux706va00zp5qpb2dy9d9jr/event/none/aca_basicmessage/new_content">
 <input type="hidden" name="their_vk" value="#{vk}">
 <input name="content">
 <button type="submit">Send message</button>
@@ -108,6 +108,7 @@ function playMessages(eci){
   var xhr = new XMLHttpRequest;
   xhr.onload = function(){
     var data = xhr.response;
+    console.log(JSON.parse(data));
     document.getElementById('messaging').innerHTML = data;
   }
   xhr.onerror = function(){alert(xhr.responseText);}
