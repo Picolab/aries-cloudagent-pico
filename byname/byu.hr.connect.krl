@@ -86,25 +86,26 @@ Invitation you received:
     }
     styles_one = <<<style type="text/css">
 #messaging {
-  max-height: 75vp;
+  max-height: 75vh;
   width: 30%;
   overflow: hidden;
   overflow-y: scroll;
   background-color: white;
   padding: 10px;
 }
-#messaging .incoming {
-  width: 40%;
+#messaging p {
+  margin: 0;
+  padding: 10px;
   border: 1px solid black;
   border-radius: 15px;
+  max-width: 40%;
+}
+#messaging .incoming {
   border-bottom-left-radius: 0;
 }
 #messaging .outgoing {
   float: right;
   clear: both;
-  width: 40%;
-  border: 1px solid black;
-  border-radius: 15px;
   border-bottom-right-radius: 0;
 }
 </style>
@@ -121,12 +122,12 @@ Invitation you received:
 <pre>{
 #{c.map(prettyPrint).values().join("")}}</pre>
 <div id="messaging">
-</div>
 <form action="#{meta:host}/sky/event/ckux706va00zp5qpb2dy9d9jr/none/aca_basicmessage/new_content">
 <input type="hidden" name="their_vk" value="#{vk}">
 <input name="content">
 <button type="submit">Send message</button>
 </form>
+</div>
 <script type="text/javascript">
 function playMessages(eci){
   var url = '#{meta:host}/c/'+eci+'/query/io.picolabs.aca.basicmessage/basicmessages?their_vk=#{vk}';
