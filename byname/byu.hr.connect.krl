@@ -85,7 +85,7 @@ Invitation you received:
       + html:footer()
     }
     one = function(vk,_headers){
-      c = ent:cachedConnections{vk}
+      c = ent:connectionsCache{vk}
       label = c{"label"}
       html:header("Your connection to "+label,"",null,null,_headers)
       + <<<h1>Your connection to #{label}</h1>
