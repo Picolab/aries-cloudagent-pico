@@ -95,6 +95,22 @@ Invitation you received:
       + <<<h1>Your connection to #{label}</h1>
 <pre>{
 #{c.map(prettyPrint).values().join("")}}</pre>
+<div id="messaging">
+</div>
+<script type="text/javascript">
+function playMessages(eci){
+  var url = '#{meta:host}/c/'+eci+'/query/io.picolabs.aca.basicmessage/basicmessages?their_vk='+vk;
+  var xhr = new XMLHttpRequest;
+  xhr.onload = function(){
+    var data = xhr.response;
+    document.getElementById('messaging').innerHTML = data;
+  }
+  xhr.onerror = function(){alert(xhr.responseText);}
+  xhr.open("GET",url,true);
+  xhr.send();
+}
+playMessages('ckux706va00zp5qpb2dy9d9jr');
+</script>
 >>
       + html:footer()
     }
