@@ -84,6 +84,27 @@ Invitation you received:
 >>
       + html:footer()
     }
+    styles_one = <<<style type="text/css">
+#messages {
+  height: 75vp;
+  width: 30vp;
+  overflow: hidden;
+  overflow-y: scroll;
+  background-color: white;
+}
+#messages .incoming {
+  border: 1px solid black;
+  border-radius: 15px;
+  border-bottom-left-radius: 0;
+}
+#messages .outgoing {
+  float: right;
+  border: 1px solid black;
+  border-radius: 15px;
+  border-bottom-right-radius: 0;
+}
+</style>
+>>
     one = function(vk,_headers){
       prettyPrint = function(v,k){
         <<  "#{k}": #{v.encode()},
@@ -91,7 +112,7 @@ Invitation you received:
       }
       c = ent:connectionsCache{vk}
       label = c{"label"}
-      html:header("Your connection to "+label,"",null,null,_headers)
+      html:header("Your connection to "+label,styles_one,null,null,_headers)
       + <<<h1>Your connection to #{label}</h1>
 <pre>{
 #{c.map(prettyPrint).values().join("")}}</pre>
