@@ -103,6 +103,7 @@ Invitation you received:
   overflow-x: scroll;
 }
 #messaging .incoming {
+  float: left;
   border-bottom-left-radius: 0;
 }
 #messaging .outgoing {
