@@ -48,14 +48,10 @@ var getConnections = function(){
       ul.appendChild(li);
     }
     var data = xhr.response;
-    alert(data.length);
-    alert(data);
     var pdata = JSON.parse(data);
-    alert(pdata.length);
-    alert(pdata);
     for(var i=0; i<=pdata.length-1; ++i){
       var c = pdata[i];
-      alert(c);
+      alert(Object.keys(c));
       appendLI(c.label);
     }
   }
