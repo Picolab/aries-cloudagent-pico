@@ -4,7 +4,7 @@ ruleset byu.hr.connect {
     use module io.picolabs.subscription alias subs
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
-    shares connect, external
+    shares connect, external, one
   }
   global {
     installerRID = "io.picolabs.aca.installer"
@@ -35,8 +35,10 @@ able => "" | << disabled title="#{n} needs this app">>
 >>
     }
     cachedConnectionsLI = function(c){
+      label = c.get("label")
       url = <<$#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/one.html>>
-      <<<li><a href="#{url}">#{c.get("label")}</a></li>
+            + "?label=" + label
+      <<<li><a href="#{url}">#{label}</a></li>
 >>
     }
     connect = function(_headers){
@@ -77,6 +79,10 @@ Invitation you received:
 <button type="submit">Accept invitation</button>
 </form>
 >>
+      + html:footer()
+    }
+    one = function(label,_headers){
+      html:header("Your connection to "+label,"",null,null,_headers)
       + html:footer()
     }
   }
