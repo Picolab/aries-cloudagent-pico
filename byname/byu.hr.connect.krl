@@ -35,9 +35,10 @@ able => "" | << disabled title="#{n} needs this app">>
 >>
     }
     cachedConnectionsLI = function(c){
+      vk = c.get("their_vk")
       label = c.get("label")
       url = <<#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/one.html>>
-            + "?label=" + label
+            + "?vk=" + vk
       <<<li><a href="#{url}">#{label}</a></li>
 >>
     }
@@ -83,9 +84,12 @@ Invitation you received:
 >>
       + html:footer()
     }
-    one = function(label,_headers){
+    one = function(vk,_headers){
+      c = ent:cachedConnections{vk}
+      label = c{"label"}
       html:header("Your connection to "+label,"",null,null,_headers)
       + <<<h1>Your connection to #{label}</h1>
+<pre>#{c.encode()}</pre>
 >>
       + html:footer()
     }
