@@ -93,7 +93,7 @@ Invitation you received:
       label = c{"label"}
       html:header("Your connection to "+label,"",null,null,_headers)
       + <<<h1>Your connection to #{label}</h1>
-<pre>#{c.reduce(prettyPrint,<<{
+<pre>#{c.values().reduce(prettyPrint,<<{
 >>).join("")+"}"}</pre>
 >>
       + html:footer()
