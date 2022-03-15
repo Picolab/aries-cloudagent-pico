@@ -10,6 +10,13 @@ ruleset byu.hr.connect {
     installerRID = "io.picolabs.aca.installer"
     installerURI = meta:rulesetURI.replace("byname","NEXT")
                                   .replace(meta:rid,installerRID)
+    connectionForRelationship = function(Id){
+      ent:connectionsCache
+        .values()
+        .filter(function(c){c.get("label")==Id})
+        .head()
+        .get("their_vk")
+    }
     displayNameLI = function(s){
       linkToConnect = function(){
         theirRIDs = eci.isnull() || thisPico => [] |
@@ -28,6 +35,7 @@ able => "" | << disabled title="#{n} needs this app">>
       <<<li>
 <form action="#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/internal.html">
 <input type="hidden" name="label" value="#{s{"Id"}}">
+#{connectionForRelationship(s{"Id"})}
 #{n} (#{s{"Tx_role"}} (with you as #{s{"Rx_role"}}))
 #{linkToConnect()}
 </form>
