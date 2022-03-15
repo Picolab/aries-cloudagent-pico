@@ -6,6 +6,7 @@ ruleset io.picolabs.aca.basicmessage {
         did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/basicmessage/1.0/
         https://didcomm.org/basicmessage/1.0/
     >>
+    use module io.picolabs.wrangler alias wrangler
     use module io.picolabs.aca alias aca
     shares basicmessages
   }
