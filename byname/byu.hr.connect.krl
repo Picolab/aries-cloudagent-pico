@@ -246,4 +246,11 @@ playMessages('#{bmECI}');
       clear ent:connectionsCache{their_vk}
     }
   }
+  rule redirectBack {
+    select when aca_basicmessage basicmessage_sent
+    pre {
+      referer = event:attr("_headers").get("referer")
+    }
+    if referer then send_directive("_redirect",{"url":referer})
+  }
 }

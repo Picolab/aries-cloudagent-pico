@@ -69,9 +69,8 @@ ruleset io.picolabs.aca.basicmessage {
         "serviceEndpoint": se, "packedMessage": pm
       }
       ent:basicmessages{their_vk} := wmsg
-      raise aca_basicmessage event "basicmessage_sent" attributes {
-        "their_vk":their_vk,"message":bm_plus
-      }
+      raise aca_basicmessage event "basicmessage_sent" attributes
+        event:attrs.put("message",bm_plus)
     }
   }
 //
