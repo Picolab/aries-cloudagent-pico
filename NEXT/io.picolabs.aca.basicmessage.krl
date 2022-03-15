@@ -14,6 +14,7 @@ ruleset io.picolabs.aca.basicmessage {
       .put("events",__testing.get("events").filter(function(e){
         e.get("domain") == "aca_basicmessage"
       }))
+    tags = ["aries","agent","basicmessage"]
     basicmessages = function(their_vk) {
       ent:basicmessages{their_vk}
     }
@@ -33,12 +34,15 @@ ruleset io.picolabs.aca.basicmessage {
     select when didcomm_basicmessage:message
     pre {
       their_vk = event:attr("sender_key")
-      msg = event:attr("message")
+      msg = event:attr("message").put("from","incoming")
       wmsg = ent:basicmessages{their_vk}.defaultsTo([])
-        .append(msg.put("from","incoming"))
+        .append(msg)
     }
     fired {
       ent:basicmessages{their_vk} := wmsg
+      raise aca_basicmessage event "basicmessage_received" attributes {
+        "their_vk":their_vk,"message":msg
+      }
     }
   }
 //
@@ -53,10 +57,10 @@ ruleset io.picolabs.aca.basicmessage {
       bm = basicMsgMap(content)
       pm = aca:packMsg(their_vk,bm,conn{"my_did"})
       se = conn{"their_endpoint"}
-      wmsg = ent:basicmessages{their_vk}.defaultsTo([])
-        .append(bm.put("from","outgoing")
+      bm_plus = bm.put("from","outgoing")
                   .put("color",ent:color)
-                )
+      wmsg = ent:basicmessages{their_vk}.defaultsTo([])
+        .append(bm_plus)
     }
     if se then noop()
     fired {
@@ -64,6 +68,9 @@ ruleset io.picolabs.aca.basicmessage {
         "serviceEndpoint": se, "packedMessage": pm
       }
       ent:basicmessages{their_vk} := wmsg
+      raise aca_basicmessage event "basicmessage_sent" attributes {
+        "their_vk":their_vk,"message":bm_plus
+      }
     }
   }
 //
@@ -71,10 +78,22 @@ ruleset io.picolabs.aca.basicmessage {
 //
   rule init {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
-    if ent:basicmessages.isnull() then noop()
-    fired {
-      ent:basicmessages := {}
-      ent:color := "204,204,204"
+    every {
+      wrangler:createChannel(
+        tags,
+        {"allow":[{"domain":"aca_basicmessage","name":"new_content"}],"deny":[]},
+        {"allow":[{"rid":meta:rid,"name":"basicmessages"}],"deny":[]}
+      )
     }
+    fired {
+      ent:basicmessages := ent:basicmessages.defaultsTo({})
+      ent:color := "204,204,204"
+      raise aca_basicmessage event "channel_created"
+    }
+  }
+  rule keepChannelsClean {
+    select when aca_basicmessage channel_created
+    foreach wrangler:channels(tags).reverse().tail() setting(chan)
+    wrangler:deleteChannel(chan.get("id"))
   }
 }
