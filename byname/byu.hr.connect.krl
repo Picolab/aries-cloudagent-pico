@@ -15,7 +15,7 @@ ruleset byu.hr.connect {
         theirRIDs = eci.isnull() || thisPico => [] |
           wrangler:picoQuery(eci,"io.picolabs.wrangler","installedRIDs")
         able = theirRIDs >< meta:rid
-        <<<button onclick="return false"#{
+        <<<button onclick="alert('not yet implemented');return false"#{
 able => "" | << disabled title="#{n} needs this app">>
 }>make connection</button>
 >>
