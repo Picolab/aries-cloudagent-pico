@@ -4,7 +4,7 @@ ruleset byu.hr.connect {
     use module io.picolabs.subscription alias subs
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
-    shares connect, external, one
+    shares connect, external, one, internal
   }
   global {
     installerRID = "io.picolabs.aca.installer"
@@ -15,7 +15,7 @@ ruleset byu.hr.connect {
         theirRIDs = eci.isnull() || thisPico => [] |
           wrangler:picoQuery(eci,"io.picolabs.wrangler","installedRIDs")
         able = theirRIDs >< meta:rid
-        <<<button onclick="alert('not yet implemented');return false"#{
+        <<<button type="submit"#{
 able => "" | << disabled title="#{n} needs this app">>
 }>make connection</button>
 >>
@@ -26,9 +26,9 @@ able => "" | << disabled title="#{n} needs this app">>
           thisPico     => "yourself" |
                           wrangler:picoQuery(eci,"byu.hr.core","displayName")
       <<<li>
-<form>
+<form action="#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/internal.html">
 <input type="hidden" name="label" value="#{s{"Id"}}">
-#{n} (#{s{"Tx_role"}} to your #{s{"Rx_role"}})
+#{n} (#{s{"Tx_role"}} (with you as #{s{"Rx_role"}}))
 #{linkToConnect()}
 </form>
 </li>
@@ -65,7 +65,7 @@ able => "" | << disabled title="#{n} needs this app">>
     external = function(_headers){
       inviteECI = wrangler:channels("aries,agent,connections").head().get("id")
       acceptECI = wrangler:channels("aries,agent").head().get("id")
-      html:header("manage connections","",null,null,_headers)
+      html:header("external connections","",null,null,_headers)
       + <<
 <h1>Make new external connection</h1>
 <h2><img src="https://manifold.picolabs.io/static/media/Aries.ffeeb7fd.png" alt="Aries logo" style="height:30px"> This is your Aries agent and cloud wallet</h2>
@@ -81,6 +81,12 @@ Invitation you received:
 <input name="uri">
 <button type="submit">Accept invitation</button>
 </form>
+>>
+      + html:footer()
+    }
+    internal = function(_headers){
+      html:header("internal connections","",null,null,_headers)
+      + <<<h1>Internal connections</h1>
 >>
       + html:footer()
     }
