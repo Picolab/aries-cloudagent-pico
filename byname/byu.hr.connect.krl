@@ -124,6 +124,7 @@ Invitation you received:
       }
       c = ent:connectionsCache{vk}
       label = c{"label"}
+      bmECI = wrangler:channels("aries,agent,basicmessage").head().get("id")
       html:header("Your connection to "+label,styles_one,null,null,_headers)
       + <<<h1>Your connection to #{label}</h1>
 <pre>{
@@ -132,7 +133,7 @@ Invitation you received:
 <div id="messages">
 </div>
 <div id="send_message">
-<form action="#{meta:host}/sky/event/ckux706va00zp5qpb2dy9d9jr/none/aca_basicmessage/new_content">
+<form action="#{meta:host}/sky/event/#{bmECI}/none/aca_basicmessage/new_content">
 <input type="hidden" name="their_vk" value="#{vk}">
 <input name="content">
 <button type="submit">Send message</button>
@@ -157,7 +158,7 @@ function playMessages(eci){
   xhr.open("GET",url,true);
   xhr.send();
 }
-playMessages('ckux706va00zp5qpb2dy9d9jr');
+playMessages('#{bmECI}');
 </script>
 >>
       + html:footer()
