@@ -126,8 +126,7 @@ Invitation you received:
       label = c{"label"}
       bmECI = wrangler:channels("aries,agent,basicmessage").head().get("id")
       html:header("Your connection to "+label,styles_one,null,null,_headers)
-      + <<<h1>Your connection to #{label}</h1>
-<h2><img src="https://manifold.picolabs.io/static/media/Aries.ffeeb7fd.png" alt="Aries logo" style="height:30px"> This is your Aries agent and cloud wallet</h2>
+      + <<<h1><img src="https://manifold.picolabs.io/static/media/Aries.ffeeb7fd.png" alt="Aries logo" style="height:30px"> Your connection to #{label}</h1>
 <pre>{
 #{c.map(prettyPrint).values().join("")}}</pre>
 <div id="messaging">
@@ -137,7 +136,7 @@ Invitation you received:
 <form action="#{meta:host}/sky/event/#{bmECI}/none/aca_basicmessage/new_content">
 <input type="hidden" name="their_vk" value="#{vk}">
 <input id="message_composition" name="content">
-<button type="submit">Send message</button>
+<button type="submit">Send ▷</button>
 </form>
 </div>
 </div>
