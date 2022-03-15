@@ -86,7 +86,7 @@ Invitation you received:
     }
     styles_one = <<<style type="text/css">
 #messaging {
-  max-height: 75vh;
+  max-height: 60vh;
   width: 30%;
   overflow: hidden;
   overflow-y: scroll;
@@ -135,7 +135,7 @@ Invitation you received:
 <div id="send_message">
 <form action="#{meta:host}/sky/event/#{bmECI}/none/aca_basicmessage/new_content">
 <input type="hidden" name="their_vk" value="#{vk}">
-<input name="content">
+<input id="message_composition" name="content">
 <button type="submit">Send message</button>
 </form>
 </div>
@@ -153,6 +153,7 @@ function playMessages(eci){
       p.classList.add(data[i]["from"]);
       the_div.append(p);
     }
+    document.getElementById('message_composition').focus();
   }
   xhr.onerror = function(){alert(xhr.responseText);}
   xhr.open("GET",url,true);
