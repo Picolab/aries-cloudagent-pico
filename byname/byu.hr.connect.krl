@@ -26,9 +26,13 @@ ruleset byu.hr.connect {
           wrangler:picoQuery(eci,"io.picolabs.wrangler","installedRIDs")
         able = theirRIDs >< meta:rid
         connectionForRelationship(s{"Id"}) => "(see "+s{"Id"}+" below)" |
-        <<<button type="submit"#{
+        <<<form action="#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/internal.html">
+<input type="hidden" name="label" value="#{s{"Id"}}">
+#{labelForRelationship(s)}
+button type="submit"#{
 able => "" | << disabled title="#{n} needs this app">>
 }>make connection</button>
+</form>
 >>
       }
       eci = s{"Tx"}
@@ -36,12 +40,11 @@ able => "" | << disabled title="#{n} needs this app">>
       n = eci.isnull() => "unknown"  |
           thisPico     => "yourself" |
                           wrangler:picoQuery(eci,"byu.hr.core","displayName")
+      vk = connectionForRelationship(s{"Id"})
+      url = <<#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/one.html>>
+            + "?vk=" + vk
       <<<li>
-<form action="#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/internal.html">
-<input type="hidden" name="label" value="#{s{"Id"}}">
-#{labelForRelationship(s)}
-#{linkToConnect()}
-</form>
+#{vk => <<<a href="#{url}">#{labelForRelationship(s)}</a> >> | linkToConnect()}
 </li>
 >>
     }
