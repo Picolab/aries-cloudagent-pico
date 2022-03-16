@@ -43,9 +43,10 @@ able => "" | << disabled title="#{n} needs this app">>
       vk = connectionForRelationship(s{"Id"})
       url = <<#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/one.html>>
             + "?vk=" + vk
+      delURL = <<#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_connect/deleted_connection?their_vk=#{vk}>>
       <<<li>
 #{vk => <<<a href="#{url}">#{labelForRelationship(s)}</a>
-<button disabled title="not yet implemented">delete this connection</button>
+<button onclick="location='#{delURL}'">delete this connection</button>
 >> | linkToConnect()}
 </li>
 >>
@@ -281,8 +282,16 @@ playMessages('#{bmECI}');
       clear ent:connectionsCache{their_vk}
     }
   }
+  rule initiateDeletedConnection {
+    select when byu_hr_connect deleted_connection
+    fired {
+      raise aca event "deleted_connection" attributes event:attrs
+      raise byu_hr_connect event "connection_deleted" attributes event:attrs
+    }
+  }
   rule redirectBack {
     select when aca_basicmessage basicmessage_sent
+             or byu_hr_connect connection_deleted
     pre {
       referer = event:attr("_headers").get("referer")
     }
