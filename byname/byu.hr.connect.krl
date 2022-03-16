@@ -309,7 +309,7 @@ playMessages('#{bmECI}');
     if invite then noop()
     fired {
       raise aca event "new_label" attributes {"label":Id}
-      raise aca event "didcomm:message" attributes {"uri":invite}
+      raise didcomm event "message" attributes {"uri":invite}
       raise aca event "new_label" attributes {"label":ent:agentLabel}
       raise byu_hr_connect event "connection_initiated" attributes event:attrs
     }
