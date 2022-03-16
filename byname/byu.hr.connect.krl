@@ -32,7 +32,7 @@ ruleset byu.hr.connect {
         theirRIDs = eci.isnull() || thisPico => [] |
           wrangler:picoQuery(eci,"io.picolabs.wrangler","installedRIDs")
         able = theirRIDs >< meta:rid
-        makeURL = <<#{meta:host}/sky/event/#{meta:eci}/none/#{meta:rid}/connection_needed?subscription=#{s.encode().encodeURIComponent()}>>
+        makeURL = <<#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_connect/connection_needed?subscription=#{s.encode().encodeURIComponent()}>>
         <<#{labelForRelationship(s)}
 <button onclick="location='#{makeURL}'"#{
 able => "" | << disabled title="#{n} needs this app">>
