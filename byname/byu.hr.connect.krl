@@ -17,6 +17,13 @@ ruleset byu.hr.connect {
         .head()
         .get("their_vk")
     }
+    encodeURIComponent = function(str){
+      str.replace(re#[{]#g,"%7B")
+         .replace(re#["]#g,"%22")
+         .replace(re#[:]#g,"%3A")
+         .replace(re#[,]#g,"%2C")
+         .replace(re#[}]#g,"%7D")
+    }
     displayNameLI = function(s){
       labelForRelationship = function(s){
         <<#{n} (#{s{"Tx_role"}} (with you as #{s{"Rx_role"}}))>>
@@ -25,7 +32,7 @@ ruleset byu.hr.connect {
         theirRIDs = eci.isnull() || thisPico => [] |
           wrangler:picoQuery(eci,"io.picolabs.wrangler","installedRIDs")
         able = theirRIDs >< meta:rid
-        makeURL = <<#{meta:host}/sky/event/#{meta:eci}/none/#{meta:rid}/connection_needed?subscription=#{s.encode()}>>
+        makeURL = <<#{meta:host}/sky/event/#{meta:eci}/none/#{meta:rid}/connection_needed?subscription=#{s.encode().encodeURIComponent()}>>
         <<#{labelForRelationship(s)}
 <button onclick="location='#{makeURL}'"#{
 able => "" | << disabled title="#{n} needs this app">>
