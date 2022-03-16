@@ -4,7 +4,7 @@ ruleset byu.hr.connect {
     use module io.picolabs.subscription alias subs
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
-    shares connect, external, one, internal
+    shares connect, external, one
   }
   global {
     installerRID = "io.picolabs.aca.installer"
@@ -25,14 +25,11 @@ ruleset byu.hr.connect {
         theirRIDs = eci.isnull() || thisPico => [] |
           wrangler:picoQuery(eci,"io.picolabs.wrangler","installedRIDs")
         able = theirRIDs >< meta:rid
-        connectionForRelationship(s{"Id"}) => "(see "+s{"Id"}+" below)" |
-        <<<form action="#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/internal.html">
-<input type="hidden" name="label" value="#{s{"Id"}}">
-#{labelForRelationship(s)}
-<button type="submit"#{
+        makeURL = <<#{meta:host}/sky/event/#{meta:eci}/none/#{meta:rid}/connection_needed?subscription=#{s.encode()}>>
+        <<#{labelForRelationship(s)}
+<button onclick="location='#{makeURL}'"#{
 able => "" | << disabled title="#{n} needs this app">>
 }>make connection</button>
-</form>
 >>
       }
       eci = s{"Tx"}
@@ -106,12 +103,6 @@ Invitation you received:
 <input name="uri">
 <button type="submit">Accept invitation</button>
 </form>
->>
-      + html:footer()
-    }
-    internal = function(_headers){
-      html:header("internal connections","",null,null,_headers)
-      + <<<h1>Internal connections</h1>
 >>
       + html:footer()
     }
@@ -293,9 +284,30 @@ playMessages('#{bmECI}');
       raise byu_hr_connect event "connection_deleted" attributes event:attrs
     }
   }
+  rule initiateConnectionForRelationship {
+    select when byu_hr_connect connection_needed
+      subscription re#(.+)# setting(subscription)
+    pre {
+      s = subscription.decode()
+      Id = s{"Id"}
+      eci = s{"Tx"}
+      rid = "io.picolabs.aca.connections"
+      thisPico = ctx:channels.any(function(c){c{"id"}==eci})
+      invite = thisPico => null
+                         | wrangler:picoQuery(eci,rid,"invitation",{"label":Id})
+    }
+    if invite.klog("invitation") then noop()
+    fired {
+      raise aca event "new_label" attributes {"label":Id}
+      raise aca event "didcomm:message" attributes {"uri":invite}
+      raise aca event "new_label" attributes {"label":ent:agentLabel}
+      raise byu_hr_connect event "connection_initiated" attributes event:attrs
+    }
+  }
   rule redirectBack {
     select when aca_basicmessage basicmessage_sent
              or byu_hr_connect connection_deleted
+             or byu_hr_connect connection_initiated
     pre {
       referer = event:attr("_headers").get("referer")
     }
