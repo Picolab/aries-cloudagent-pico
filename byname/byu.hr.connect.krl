@@ -45,6 +45,9 @@ able => "" | << disabled title="#{n} needs this app">>
             + "?vk=" + vk
       <<<li>
 #{vk => <<<a href="#{url}">#{labelForRelationship(s)}</a> >> | linkToConnect()}
+<form>
+<button type="submit" disabled title="not yet implemented">delete this connection</button>
+</form>
 </li>
 >>
     }
