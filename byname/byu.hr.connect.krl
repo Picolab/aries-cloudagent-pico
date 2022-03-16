@@ -135,12 +135,21 @@ Invitation you received:
 </style>
 >>
     one = function(vk,_headers){
+      labelForRelationship = function(s){
+        eci = s{"Tx"}
+        thisPico = ctx:channels.any(function(c){c{"id"}==eci})
+        n = eci.isnull() => "unknown"  |
+            thisPico     => "yourself" |
+                            wrangler:picoQuery(eci,"byu.hr.core","displayName")
+        <<#{n} (#{s{"Tx_role"}} (with you as #{s{"Rx_role"}}))>>
+      }
       prettyPrint = function(v,k){
         <<  "#{k}": #{v.encode()},
 >>
       }
       c = ent:connectionsCache{vk}
-      label = c{"label"}
+      a_subs = subs:established("Id",c{"label"}).head()
+      label = a_subs => labelForRelationship(a_subs) | c{"label"}
       bmECI = wrangler:channels("aries,agent,basicmessage").head().get("id")
       html:header("Your connection to "+label,styles_one,null,null,_headers)
       + <<<h1><img src="https://manifold.picolabs.io/static/media/Aries.ffeeb7fd.png" alt="Aries logo" style="height:30px"> Your connection to #{label}</h1>
