@@ -29,7 +29,7 @@ ruleset byu.hr.connect {
         <<<form action="#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/internal.html">
 <input type="hidden" name="label" value="#{s{"Id"}}">
 #{labelForRelationship(s)}
-button type="submit"#{
+<button type="submit"#{
 able => "" | << disabled title="#{n} needs this app">>
 }>make connection</button>
 </form>
