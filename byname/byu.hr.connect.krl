@@ -72,7 +72,11 @@ able => "" | << disabled title="#{n} needs this app">>
 </form>
 >>
       + <<<ul>
-#{ent:connectionsCache.values().map(cachedConnectionsLI).join("")}</ul>
+#{ent:connectionsCache
+  .values()
+  .filter(function(c){not subs:established("Id",c{"label"}).head()})
+  .map(cachedConnectionsLI)
+  .join("")}</ul>
 >>
       + html:footer()
     }
