@@ -44,10 +44,9 @@ able => "" | << disabled title="#{n} needs this app">>
       url = <<#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/one.html>>
             + "?vk=" + vk
       <<<li>
-#{vk => <<<a href="#{url}">#{labelForRelationship(s)}</a> >> | linkToConnect()}
-<form>
-<button type="submit" disabled title="not yet implemented">delete this connection</button>
-</form>
+#{vk => <<<a href="#{url}">#{labelForRelationship(s)}</a>
+<a disabled title="not yet implemented">delete this connection</a>
+>> | linkToConnect()}
 </li>
 >>
     }
