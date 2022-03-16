@@ -46,7 +46,7 @@ able => "" | << disabled title="#{n} needs this app">>
       delURL = <<#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_connect/deleted_connection?their_vk=#{vk}>>
       <<<li>
 #{vk => <<<a href="#{url}">#{labelForRelationship(s)}</a>
-<button onclick="location='#{delURL}'">delete this connection</button>
+<button onclick="if(confirm('If you proceed, this connection will be deleted on your end. This cannot be undone.')){location='#{delURL}'}">delete this connection</button>
 >> | linkToConnect()}
 </li>
 >>
@@ -56,7 +56,11 @@ able => "" | << disabled title="#{n} needs this app">>
       label = c.get("label")
       url = <<#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/one.html>>
             + "?vk=" + vk
-      <<<li><a href="#{url}">#{label}</a></li>
+      delURL = <<#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_connect/deleted_connection?their_vk=#{vk}>>
+      <<<li>
+<a href="#{url}">#{label}</a>
+<button onclick="if(confirm('If you proceed, this connection will be deleted on your end. This cannot be undone.')){location='#{delURL}'}">delete this connection</button>
+</li>
 >>
     }
     connect = function(_headers){
