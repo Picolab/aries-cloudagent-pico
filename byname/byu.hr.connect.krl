@@ -127,7 +127,7 @@ Invitation you received:
   max-height: 60vh;
   width: 30%;
   overflow: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   background-color: white;
   padding: 10px;
 }
@@ -138,7 +138,7 @@ Invitation you received:
   border-radius: 15px;
   max-width: 80%;
   clear: both;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 #messaging .incoming {
   float: left;
