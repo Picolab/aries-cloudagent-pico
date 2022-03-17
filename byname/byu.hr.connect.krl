@@ -22,11 +22,12 @@ ruleset byu.hr.connect {
   var makeConnection = function(url,the_s){
     var form_data = "subscription=" + encodeURIComponent(the_s);
     var xhr = new XMLHttpRequest();
-    xhr.onload = function(){alert("This may take a moment");location.reload();}
+    xhr.onload = function(){location.reload();}
     xhr.onerror = function(){alert(xhr.responseText);}
     xhr.open('POST',url,true);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhr.send(form_data);
+    alert("This will take just a moment.");
     return false;
   }
 </script>
