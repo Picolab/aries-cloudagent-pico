@@ -19,8 +19,8 @@ ruleset byu.hr.connect {
     }
     connectScript = function(){
       <<<script type="text/javascript">
-  var makeConnection = function(url,the_s){
-    var form_data = "subscription=" + encodeURIComponent(the_s);
+  var makeConnection = function(url,s_Id,s_Tx){
+    var form_data = "Id=" + s_Id + "&Tx=" + s_Tx;
     var xhr = new XMLHttpRequest();
     xhr.onload = function(){location.reload();}
     xhr.onerror = function(){alert(xhr.responseText);}
@@ -43,7 +43,7 @@ ruleset byu.hr.connect {
         able = theirRIDs >< meta:rid
         makeURL = <<#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_connect/connection_needed>>
         <<#{labelForRelationship(s)}
-<button onclick="makeConnection('#{makeURL}','#{s.encode()}')"#{
+<button onclick="makeConnection('#{makeURL}','#{s{"Id"}}','#{s{"Tx"}}')"#{
 able => "" | << disabled title="#{n} needs this app">>
 }>make connection</button>
 >>
@@ -302,15 +302,12 @@ playMessages('#{bmECI}');
   }
   rule initiateConnectionForRelationship {
     select when byu_hr_connect connection_needed
-      subscription re#(.+)# setting(subscription)
+      Id re#(.+)# Tx re#(.+)# setting(Id,Tx)
     pre {
-      s = subscription.decode()
-      Id = s{"Id"}
-      eci = s{"Tx"}
       rid = "io.picolabs.aca.connections"
-      thisPico = ctx:channels.any(function(c){c{"id"}==eci})
+      thisPico = ctx:channels.any(function(c){c{"id"}==Tx})
       invite = thisPico => null
-                         | wrangler:picoQuery(eci,rid,"invitation",{"label":Id})
+                         | wrangler:picoQuery(Tx,rid,"invitation",{"label":Id})
     }
     if invite then noop()
     fired {
