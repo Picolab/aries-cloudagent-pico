@@ -302,14 +302,16 @@ playMessages('#{bmECI}');
       thisPico = ctx:channels.any(function(c){c{"id"}==eci})
       invite = thisPico => null
                          | wrangler:picoQuery(eci,rid,"invitation",{"label":Id})
-      sanity = invite.klog("invitation")
-        .match(re#(http.+[?].*((c_i=)|(d_m=)).+)#)
-        .klog("sanity")
     }
     if invite then noop()
     fired {
       raise aca event "new_label" attributes {"label":Id}
       raise didcomm event "message" attributes {"uri":invite}
+    }
+  }
+  rule afterConnectionRequestSent {
+    select when aca_connections connection_request_sent
+    fired {
       raise aca event "new_label" attributes {"label":ent:agentLabel}
       raise byu_hr_connect event "connection_initiated" attributes event:attrs
     }

@@ -193,6 +193,7 @@ ruleset io.picolabs.aca.connections {
       raise didcomm event "new_ssi_agent_wire_message" attributes {
         "serviceEndpoint": se, "packedMessage": pm
       }
+      raise aca_connections event "connection_response_sent" attributes rm
     }
   }
 //
@@ -244,6 +245,7 @@ ruleset io.picolabs.aca.connections {
       raise didcomm event "new_ssi_agent_wire_message" attributes {
         "serviceEndpoint": reqURL, "packedMessage": packedBody
       }
+      raise aca_connections event "connection_request_sent" attributes rm
     }
   }
 //
