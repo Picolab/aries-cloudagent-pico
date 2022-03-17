@@ -17,12 +17,20 @@ ruleset byu.hr.connect {
         .head()
         .get("their_vk")
     }
-    encodeURIComponent = function(str){
-      str.replace(re#[{]#g,"%7B")
-         .replace(re#["]#g,"%22")
-         .replace(re#[:]#g,"%3A")
-         .replace(re#[,]#g,"%2C")
-         .replace(re#[}]#g,"%7D")
+    connectScript = function(){
+      <<<script type="text/javascript">
+  var makeConnection = function(url,the_s){
+    var form_data = "subscription=" + encodeURIComponent(the_s);
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function(){alert("This may take a moment");location.reload();}
+    xhr.onerror = function(){alert(xhr.responseText);}
+    xhr.open('POST',url,true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.send(form_data);
+    return false;
+  }
+</script>
+>>
     }
     displayNameLI = function(s){
       labelForRelationship = function(s){
@@ -32,9 +40,9 @@ ruleset byu.hr.connect {
         theirRIDs = eci.isnull() || thisPico => [] |
           wrangler:picoQuery(eci,"io.picolabs.wrangler","installedRIDs")
         able = theirRIDs >< meta:rid
-        makeURL = <<#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_connect/connection_needed?subscription=#{s.encode().encodeURIComponent()}>>
+        makeURL = <<#{meta:host}/sky/event/#{meta:eci}/none/byu_hr_connect/connection_needed>>
         <<#{labelForRelationship(s)}
-<button onclick="location='#{makeURL}'"#{
+<button onclick="makeConnection('#{makeURL}','#{s.encode()}')"#{
 able => "" | << disabled title="#{n} needs this app">>
 }>make connection</button>
 >>
@@ -68,7 +76,7 @@ able => "" | << disabled title="#{n} needs this app">>
 >>
     }
     connect = function(_headers){
-      html:header("manage connections","",null,null,_headers)
+      html:header("manage connections",connectScript(),null,null,_headers)
       + <<
 <h1>Manage connections</h1>
 <h2><img src="https://manifold.picolabs.io/static/media/Aries.ffeeb7fd.png" alt="Aries logo" style="height:30px"> This is your Aries agent and cloud wallet</h2>
@@ -313,13 +321,11 @@ playMessages('#{bmECI}');
     select when aca_connections connection_request_sent
     fired {
       raise aca event "new_label" attributes {"label":ent:agentLabel}
-      raise byu_hr_connect event "connection_initiated" attributes event:attrs
     }
   }
   rule redirectBack {
     select when aca_basicmessage basicmessage_sent
              or byu_hr_connect connection_deleted
-             or byu_hr_connect connection_initiated
     pre {
       referer = event:attr("_headers").get("referer")
     }
