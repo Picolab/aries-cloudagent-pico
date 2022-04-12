@@ -31,11 +31,10 @@ ruleset io.picolabs.aca {
           Available thru provided function `connections`
           Updatable thru events `aca:new_connection`, `aca:deleted_connection`
     >>
-    configure using host = meta:host
     use module io.picolabs.wrangler alias wrangler
     use module io.picolabs.did alias did
     provides packMsg, signField, verifySignatures,
-      localServiceEndpoint, prefix, label, connections, host
+      localServiceEndpoint, prefix, label, connections
     shares prefix, label, lastHttpResponse, connections
   }
   global {
@@ -117,7 +116,7 @@ ruleset io.picolabs.aca {
     }
     localServiceEndpoint = function(eci,eid){
       the_eid = eid => eid | "none"
-      <<#{host}/sky/event/#{eci}/#{the_eid}/didcomm/message>>
+      <<#{meta:host}/sky/event/#{eci}/#{the_eid}/didcomm/message>>
     }
     label = function(){
       ent:label
