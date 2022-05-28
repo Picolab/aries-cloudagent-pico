@@ -4,14 +4,6 @@ ruleset html {
     shares __testing
   }
   global {
-    __testing = { "queries":
-      [ { "name": "__testing" }
-      //, { "name": "entry", "args": [ "key" ] }
-      ] , "events":
-      [ //{ "domain": "d1", "type": "t1" }
-      //, { "domain": "d2", "type": "t2", "attrs": [ "a1", "a2" ] }
-      ]
-    }
     header = function(title,scripts) {
       <<<!DOCTYPE HTML>
 <html>
