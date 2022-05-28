@@ -1,7 +1,6 @@
 ruleset html {
   meta {
     provides header, footer
-    shares __testing
   }
   global {
     header = function(title,scripts) {
