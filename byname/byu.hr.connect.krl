@@ -84,7 +84,10 @@ able => "" | << disabled title="#{n} needs this app">>
 <h2>Connections based on  your relationships:</h2>
 <ul>
 >>
-      + subs:established().map(displayNameLI).join("")
+      + subs:established()
+          .filter(function(s){s{"Tx_role"}!="participant list"})
+          .map(displayNameLI)
+          .join("")
       + <<</ul>
 <h2>External connections</h2>
 <form action="#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/external.html">
