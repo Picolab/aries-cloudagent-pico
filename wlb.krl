@@ -419,6 +419,14 @@ ruleset wlb {
     }
   ]
 }
+    basicmessages = function(){
+      raw_basicmessages
+        .map(function(v,k){
+          v.map(function(bm){bm.put("their_vk",k)})
+        })
+        .values()
+        .reduce(function(a,b){a.append(b)},[])
+    }
     connections = function(){
       rc_keys = raw_connections.values().head().keys().join(9.chr())
       rc_values = raw_connections
@@ -434,9 +442,6 @@ ruleset wlb {
         })
       return
         [rc_keys].append(rc_values).join(10.chr())
-    }
-    basicmessages = function(){
-      raw_basicmessages.length()
     }
   }
 }
