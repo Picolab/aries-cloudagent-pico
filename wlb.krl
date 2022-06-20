@@ -105,7 +105,7 @@ ruleset wlb {
   }
 }
     connections = function(){
-      rc_keys = raw_connections.head().keys()
+      rc_keys = raw_connections.head().keys().join(9.chr())
       rc_values = raw_connections
         .values()
         .map(function(c){
