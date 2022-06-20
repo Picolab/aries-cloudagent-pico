@@ -1,6 +1,6 @@
 ruleset wlb {
   meta {
-    shares connections//, basicmessages
+    shares connections, basicmessages
   }
   global {
     raw_connections = {
@@ -104,6 +104,321 @@ ruleset wlb {
     ]
   }
 }
+    raw_basicmessages = {
+  "66UMEG2hakYNRAVrc5tQ6twMQVmmPLz6v4qtCwHiem6o": [
+    {
+      "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-06-16T15:41:46.381Z",
+      "content": "hello",
+      "from": "outgoing",
+      "color": "204,204,204"
+    }
+  ],
+  "7TBz2T1stoG7JL5hz51HgFqiQxRWgTonEjMVXZpnfb7v": [
+    {
+      "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-14T20:33:11.371Z",
+      "content": "Hello there",
+      "from": "outgoing",
+      "color": "204,204,204"
+    },
+    {
+      "@type": "https://didcomm.org/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-14T20:34:04.812Z",
+      "content": "Bob's your uncle",
+      "from": "incoming"
+    },
+    {
+      "@type": "https://didcomm.org/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-14T21:08:44.916Z",
+      "content": "cookies",
+      "from": "incoming"
+    },
+    {
+      "@type": "https://didcomm.org/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-14T22:13:18.527Z",
+      "content": "",
+      "from": "incoming"
+    },
+    {
+      "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-14T22:14:52.538Z",
+      "content": "Somehow, I don't know how, you must've sent me a message with no content. At all. How did you do that?",
+      "from": "outgoing",
+      "color": "204,204,204"
+    },
+    {
+      "@type": "https://didcomm.org/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-14T22:17:44.611Z",
+      "content": "Just clicked on Send message button!",
+      "from": "incoming"
+    },
+    {
+      "@type": "https://didcomm.org/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-14T22:22:36.076Z",
+      "content": "Showing your endpoint as \"https://manifold.picolabs.io:9090/sky/event/LY6tWCGNFR85B2iFdpcEQ9/null/didcomm/message\"",
+      "from": "incoming"
+    },
+    {
+      "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-14T22:30:59.254Z",
+      "content": "yes, and no routing",
+      "from": "outgoing",
+      "color": "204,204,204"
+    },
+    {
+      "@type": "https://didcomm.org/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-15T00:25:34.762Z",
+      "content": "Thank you and good-bye",
+      "from": "incoming"
+    },
+    {
+      "@type": "https://didcomm.org/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-15T00:27:53.310Z",
+      "content": "Trying to get enough basicmessages that the vertical scroll bar will be necessary.",
+      "from": "incoming"
+    },
+    {
+      "@type": "https://didcomm.org/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-15T00:30:02.088Z",
+      "content": "It is going to take quite a bit more text to trigger the 75% of viewport height which is when we will need a vertical scroll bar.",
+      "from": "incoming"
+    },
+    {
+      "@type": "https://didcomm.org/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-15T00:31:07.810Z",
+      "content": "I had hard-coded an ECI. And worse, checked it in to a public repository. Deleted it from the pico-engine, so that channel is gone.",
+      "from": "incoming"
+    },
+    {
+      "@type": "https://didcomm.org/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-15T14:04:01.707Z",
+      "content": "good morning",
+      "from": "incoming"
+    },
+    {
+      "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-15T14:04:17.757Z",
+      "content": "good morning",
+      "from": "outgoing",
+      "color": "204,204,204"
+    },
+    {
+      "@type": "https://didcomm.org/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-15T14:06:35.394Z",
+      "content": "and again",
+      "from": "incoming"
+    },
+    {
+      "@type": "https://didcomm.org/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-15T14:17:43.463Z",
+      "content": "another test message",
+      "from": "incoming"
+    },
+    {
+      "@type": "https://didcomm.org/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-15T14:33:12.682Z",
+      "content": "yet another test message, this one with a long unbroken string 8C7bhaamXBobqrdmFq6WttyaV2sGzvADhTTztNBybowH",
+      "from": "incoming"
+    },
+    {
+      "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-15T16:26:06.716Z",
+      "content": "hey, that's my verification key!",
+      "from": "outgoing",
+      "color": "204,204,204"
+    },
+    {
+      "@type": "https://didcomm.org/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-15T16:59:30.292Z",
+      "content": "MMMMMMMMMMMMM",
+      "from": "incoming"
+    }
+  ],
+  "96YvmrGeTq5syhBVdsKxRXW2w8F8L4VmgPYynUHgimu5": [
+    {
+      "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-06-16T16:05:59.471Z",
+      "content": "hello Lab",
+      "from": "outgoing",
+      "color": "204,204,204"
+    }
+  ],
+  "A6G9yvuQ85Nb3ihAXTgLQmi2kseGoe1hPXAuqRmGVca6": [
+    {
+      "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-06-16T15:05:27.764Z",
+      "content": "hello",
+      "from": "outgoing",
+      "color": "204,204,204"
+    }
+  ],
+  "B5zqB6KU4KxuiHmBbWZWuJs4pMdWqYgehC49PeNS34hK": [
+    {
+      "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/basicmessage/1.0/message",
+      "@id": "25c149ac-c0ae-4369-b74b-aea312abbf18",
+      "~l10n": {
+        "locale": "en",
+        "localizable": [],
+        "catalogs": []
+      },
+      "content": "test ",
+      "sent_time": "2022-06-16T16:42:28.740025Z",
+      "from": "incoming"
+    },
+    {
+      "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-06-16T16:42:38.458Z",
+      "content": "hello RJ",
+      "from": "outgoing",
+      "color": "204,204,204"
+    }
+  ],
+  "EZpyAWu1mRY2vGSRQmEyx4tWXd4QEsaizWMQGycag6sh": [
+    {
+      "@type": "https://didcomm.org/basicmessage/1.0/message",
+      "@id": "83d55288-dd99-4432-b2e3-f7f56f3e4e35",
+      "sent_time": "2022-06-16T14:54:57.700Z",
+      "content": "Hello from the interop room 2 session 1",
+      "~l10n": {
+        "locale": "en"
+      },
+      "from": "incoming"
+    }
+  ],
+  "FruiHhHB2cPU4UW9w6kQUPcFtLJALPWhj1WkyQ1L4Sre": [
+    {
+      "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2022-03-11T22:05:26.600Z",
+      "content": "hello test",
+      "from": "outgoing",
+      "color": "204,204,204"
+    }
+  ],
+  "GynPLwnJodvu8mk98kuM55fEb7oufo4CcRweDknhYRrA": [
+    {
+      "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2021-04-20T21:56:31.139Z",
+      "content": "Hey, Lynn. Do you read me?",
+      "from": "outgoing",
+      "color": "204,204,204"
+    },
+    {
+      "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2021-04-20T21:57:38.231Z",
+      "content": "Yep, I see it!",
+      "from": "incoming"
+    },
+    {
+      "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2021-05-07T13:12:25.623Z",
+      "content": "Can you read me?",
+      "from": "incoming"
+    },
+    {
+      "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2021-05-07T13:13:02.026Z",
+      "content": "Poking around to see if I can replicate the 404 on notifications error, so far I am unsuccessful :(",
+      "from": "incoming"
+    }
+  ],
+  "k4HUz22YPqQcKhz6rdctuTC1bdQMMQmzJjWW2mJiDJ4": [
+    {
+      "@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/basicmessage/1.0/message",
+      "~l10n": {
+        "locale": "en"
+      },
+      "sent_time": "2021-04-16T13:54:13.595Z",
+      "content": "may I send this text?",
+      "from": "outgoing",
+      "color": "204,204,204"
+    }
+  ]
+}
     connections = function(){
       rc_keys = raw_connections.values().head().keys().join(9.chr())
       rc_values = raw_connections
@@ -119,6 +434,9 @@ ruleset wlb {
         })
       return
         [rc_keys].append(rc_values).join(10.chr())
+    }
+    basicmessages = function(){
+      raw_basicmessages.length()
     }
   }
 }
