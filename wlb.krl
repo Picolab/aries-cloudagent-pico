@@ -426,6 +426,13 @@ ruleset wlb {
         })
         .values()
         .reduce(function(a,b){a.append(b)},[])
+        .map(function(bmv){
+          bmv{"their_vk"} + 9.chr() +
+          bmv{"sent_time"} + 9.chr() +
+          bmv{"from"} + 9.chr() +
+          bmv{"content"}
+        })
+        .join(chr(10))
     }
     connections = function(){
       rc_keys = raw_connections.values().head().keys().join(9.chr())
