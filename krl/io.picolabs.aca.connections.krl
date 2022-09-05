@@ -125,7 +125,7 @@ ruleset io.picolabs.aca.connections {
       service = connection{["DIDDoc","service"]}
         .filter(function(x){
           x{"type"}=="IndyAgent"
-          && x{"id"}.match(their_did+";indy")
+          && x{"id"}.match("^"+their_did)
         }).head()
       se = service{"serviceEndpoint"}
       their_rks = service{"routingKeys"}.defaultsTo([])
