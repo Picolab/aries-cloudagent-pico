@@ -332,4 +332,18 @@ playMessages('#{bmECI}');
     }
     if referer then send_directive("_redirect",{"url":referer})
   }
+/*
+ * Notable events
+ */
+  rule newBasicmessage {
+    select when aca_basicmessage basicmessage_received
+      their_vk re#(.+)# setting(vk)
+    fired {
+      raise byname_notification event "status" attributes {
+        "application":meta:rid,
+        "subject":"a basicmessage from "+vk,
+        "description":event:attrs.get("message").encode(),
+      }
+    }
+  }
 }
