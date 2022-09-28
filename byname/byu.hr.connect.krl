@@ -338,10 +338,22 @@ playMessages('#{bmECI}');
   rule newBasicmessage {
     select when aca_basicmessage basicmessage_received
       their_vk re#(.+)# setting(vk)
+    pre {
+      labelForRelationship = function(s){
+        eci = s{"Tx"}
+        thisPico = ctx:channels.any(function(c){c{"id"}==eci})
+        eci.isnull() => "unknown"  |
+        thisPico     => "yourself" |
+                        wrangler:picoQuery(eci,"byu.hr.core","displayName")
+      }
+      c = ent:connectionsCache{vk}
+      a_subs = subs:established("Id",c{"label"}).head()
+      label = a_subs => labelForRelationship(a_subs) | c{"label"}
+    }
     fired {
       raise byname_notification event "status" attributes {
         "application":meta:rid,
-        "subject":"a basicmessage from "+vk,
+        "subject":"a basicmessage from "+label,
         "description":event:attrs.get("message").encode(),
       }
     }
