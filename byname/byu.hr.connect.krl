@@ -344,7 +344,8 @@ playMessages('#{bmECI}');
         thisPico = ctx:channels.any(function(c){c{"id"}==eci})
         eci.isnull() => "unknown"  |
         thisPico     => "yourself" |
-                        wrangler:picoQuery(eci,"byu.hr.core","displayName")
+//                        wrangler:picoQuery(eci,"byu.hr.core","displayName")
+null // avoid picoQuery because other pico is waiting!
       }
       c = ent:connectionsCache{vk}
       a_subs = subs:established("Id",c{"label"}).head()
