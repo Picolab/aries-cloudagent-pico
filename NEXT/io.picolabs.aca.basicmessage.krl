@@ -81,7 +81,8 @@ ruleset io.picolabs.aca.basicmessage {
     every {
       wrangler:createChannel(
         tags,
-        {"allow":[{"domain":"aca_basicmessage","name":"new_content"}],"deny":[]},
+        {"allow":[{"domain":"aca_basicmessage","name":"new_content"},
+                  {"domain":"http","name":"post"}],"deny":[]},
         {"allow":[{"rid":meta:rid,"name":"basicmessages"}],"deny":[]}
       )
     }
