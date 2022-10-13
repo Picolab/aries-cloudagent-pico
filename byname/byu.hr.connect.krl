@@ -4,6 +4,7 @@ ruleset byu.hr.connect {
     use module io.picolabs.subscription alias subs
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
+    use module byu.hr.relate alias rel
     shares connect, external, one
   }
   global {
@@ -344,8 +345,7 @@ playMessages('#{bmECI}');
         thisPico = ctx:channels.any(function(c){c{"id"}==eci})
         eci.isnull() => "unknown"  |
         thisPico     => "yourself" |
-//                        wrangler:picoQuery(eci,"byu.hr.core","displayName")
-null // avoid picoQuery because other pico is waiting!
+                        rel:otherName(s{"Id"}) || "unknown relationship"
       }
       c = ent:connectionsCache{vk}
       a_subs = subs:established("Id",c{"label"}).head()
