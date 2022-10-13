@@ -38,6 +38,7 @@ ruleset io.picolabs.aca {
     shares prefix, label, lastHttpResponse, connections
   }
   global {
+    tags = ["Aries","agent"]
     __testing = __testing
       .put("events",__testing.get("events").filter(function(e){
         domain = e.get("domain")
@@ -138,12 +139,13 @@ ruleset io.picolabs.aca {
     pre {
       se = event:attr("serviceEndpoint")
       pm = event:attr("packedMessage")
+      eci = wrangler:channels(tags).head().get("id")
     }
     http:post(
       se,
       body=pm,
       headers={"content-type":"application/ssi-agent-wire"},
-      autosend = {"eci": event:eci, "domain": "http", "type": "post", "name": "post"}
+      autosend = {"eci": eci, "domain": "http", "type": "post", "name": "post"}
     )
   }
   rule save_last_http_response {
@@ -203,7 +205,6 @@ ruleset io.picolabs.aca {
   rule create_incoming_channel_on_installation {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
     pre {
-      tags = ["Aries","agent"]
       eventPolicy = {
         "allow": [
           { "domain": "didcomm", "name": "message" },
@@ -219,11 +220,7 @@ ruleset io.picolabs.aca {
         ],
         "deny": []
       }
-      the_tags = tags.sort().join(",")
-      eci = wrangler:channels()
-        .filter(function(c){c["tags"].sort().join(",") == the_tags})
-        .map(function(c){c["id"]})
-        .head()
+      eci = wrangler:channels(tags).head().get("id")
     }
     if ent:cList.isnull() then noop()
     fired {
