@@ -1,6 +1,17 @@
 # aries-cloudagent-pico
 Aries Cloud Agent - Pico
 
+# Deprecated
+
+As of version 1.3.0 of the pico engine, every pico is automatically an agent speaking DIDComm v2.
+
+Whether it is a cloud agent or an edge agent depends on where the pico engine that hosts it is running.
+
+With that, 
+- we are no longer supporting picos using the rulesets in this repository, and
+- future development will take place in the [pico-engine](https://github.com/Picolab/pico-engine) repo and the [DIDComm-v2](https://github.com/Picolab/DIDComm-V2) repo
+
+
 ## How to get your own ACA-Pico agents
 
 1. Own and operate a [node pico-engine](https://github.com/Picolab/pico-engine/tree/master/packages/pico-engine)
